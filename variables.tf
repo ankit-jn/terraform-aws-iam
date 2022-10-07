@@ -1,7 +1,62 @@
 variable "account_alias" {
     description = "(Required) The account alias"
     type        = string
+    default     = ""
 }
+
+variable "organization_account" {
+    description = "Whether account is AWS organiations?"
+    type = bool
+    default = false
+}
+
+variable "management_account" {
+    description = "Whether account is for management [i.e. user, group, Policy Management] (could be a part of AWS organization)?"
+    type = bool
+    default = false
+}
+
+## Organization Account Specific Variables
+
+variable aws_service_access_principals {
+    description = "description"
+    default     = []
+}
+
+variable enabled_policy_types {
+    description = "List of Organizations Policy Types to enable in the Organization Root"
+    default     = []
+}
+
+variable feature_set {
+    description = ""
+    type        = string
+    default     = "ALL"
+}
+
+variable organization_units {
+    description = ""
+    default     = []
+}
+
+variable "organizations_policies" {
+    description = "List of Policies to create"
+    default = []
+} 
+
+variable "organizations_accounts" {
+    description = "List of Organization Accounts"
+    type = list(object({
+                    name      = string
+                    email     = string
+                    role_name = string
+                    tags = map(string)
+                }))
+    default = []
+} 
+
+
+## Management Account Specific Variables
 
 variable "manage_account_password_policy" {
     description = "Flag to decide if manage account Password Policy"
@@ -28,24 +83,50 @@ EOF
     default = {}
 }
 
+variable "create_force_mfa_policy" {
+    description = "ARN of FOrce MFA policy"
+    type        = bool
+    default     = true
+}
+
 variable "policies" {
     description = "List of Policies to create"
-    type = list
     default = []
 } 
 
+variable "roles" {
+    description = "List of Roles to create"
+    default = []
+} 
+
+variable "trust_account_ids" {
+    description = "Default Comma separated Account IDs to be trusted in case of Cross Account roles"
+    type        = string
+    default     = ""
+}
 
 variable "groups" {
     description = "List IAM Group to be created along with policies to be assigned"
-    type        = list
     default     = []
 }
 
 variable "users" {
     description = "List of Users to create"
-    type = list
     default = []
 } 
+
+### TAGS specific variables
+variable "organization_default_tags" {
+    description = "(Optional) A map of tags to assign to all Organizational Resources."
+    type = map
+    default = {}
+}
+
+variable "role_default_tags" {
+    description = "(Optional) A map of tags to assign to all Roles."
+    type = map
+    default = {}
+}
 
 variable "policy_default_tags" {
     description = "(Optional) A map of tags to assign to all Policies."
@@ -57,10 +138,4 @@ variable "users_default_tags" {
     description = "(Optional) A map of tags to assign to all Users."
     type = map
     default = {}
-}
-
-variable "create_force_mfa_policy" {
-    description = "ARN of FOrce MFA policy"
-    type        = bool
-    default     = true
 }

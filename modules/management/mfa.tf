@@ -71,5 +71,5 @@ resource aws_iam_policy "force_mfa_policy" {
 
     policy        = data.aws_iam_policy_document.force_mfa_policy_document[0].json
 
-    tags          = var.policy_default_tags
+    tags          = var.mfa_policy_tags
 }

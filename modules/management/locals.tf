@@ -8,7 +8,12 @@ locals {
       ]])
 
   group_policies = {
-        for attachment in aws_iam_group_policy_attachment.group:
+        for attachment in aws_iam_group_policy_attachment.this:
             attachment.group => attachment.policy_arn...
+    }
+
+  group_cross_account_policies = {
+        for attachment in aws_iam_group_policy_attachment.cross_account:
+            attachment.group => attachment.policy_arn
     }
 }

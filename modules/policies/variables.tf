@@ -1,6 +1,5 @@
 variable "policies" {
     description = "List of Policies to create"
-    type = list
     default = []
 } 
 

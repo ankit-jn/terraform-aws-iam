@@ -1,27 +1,41 @@
 ## Manages the account alias for the AWS Account
 resource aws_iam_account_alias "this" {
-    account_alias = var.account_alias
+    count = var.account_alias != "" ? 1 : 0
+    account_alias =  var.account_alias
 }
 
-#############################################################################################
-## Account Password Policy
-##
-## There is only a single policy allowed per AWS account. 
-## An existing policy will be lost when using this resource as an effect of this limitation.
-#############################################################################################
+module "iam_organization" {
+    source = "./modules/organization"
 
-resource "aws_iam_account_password_policy" "this" {
-  count = var.manage_account_password_policy ? 1 : 0
+    count = var.organization_account ? 1 : 0
+    
+    aws_service_access_principals = var.aws_service_access_principals
+    enabled_policy_types          = var.enabled_policy_types
+    feature_set                   = var.feature_set
 
-  allow_users_to_change_password = lookup(var.password_policy, "allow_users_to_change_password", "yes") == "yes"? true : false
-  hard_expiry                    = lookup(var.password_policy, "hard_expiry", "no") == "yes"? true : false
-  max_password_age               = lookup(var.password_policy, "max_password_age", 0)
-  minimum_password_length        = lookup(var.password_policy, "minimum_password_length", 8)
-  password_reuse_prevention      = lookup(var.password_policy, "password_reuse_prevention", null)
-  require_lowercase_characters   = lookup(var.password_policy, "require_lowercase_characters", "yes") == "yes"? true : false
-  require_uppercase_characters   = lookup(var.password_policy, "require_uppercase_characters", "yes") == "yes"? true : false
-  require_numbers                = lookup(var.password_policy, "require_numbers", "yes") == "yes"? true : false
-  require_symbols                = lookup(var.password_policy, "require_symbols", "yes") == "yes"? true : false
+    organization_units            = var.organization_units
+    organizations_policies        = var.organizations_policies
+    organizations_accounts        = local.managed_accounts
+
+    organization_default_tags     = var.organization_default_tags
+}
+
+module "iam_management" {
+    source = "./modules/management"
+
+    count = var.management_account ? 1 : 0
+
+    manage_account_password_policy  = var.manage_account_password_policy
+    password_policy                 = var.password_policy
+
+    create_force_mfa_policy         = true
+    mfa_policy_tags                 = var.policy_default_tags
+    
+    groups = local.iam_groups
+    users = var.users
+    
+    users_default_tags = var.users_default_tags
+
 }
 
 module "iam_policies" {
@@ -31,20 +45,11 @@ module "iam_policies" {
   default_tags = var.policy_default_tags
 }
 
-module "iam_groups" {
-  source = "./modules/groups"  
- 
-  groups = local.iam_groups
-}
+module "iam_roles" {
+    source = "./modules/roles"  
 
-module "iam_users" {
-  source = "./modules/users"  
+    trust_account_ids = var.trust_account_ids
+    roles = local.iam_roles
 
-  users = var.users
-  force_mfa_policy_arn = var.create_force_mfa_policy ? aws_iam_policy.force_mfa_policy[0].arn : ""
-  tags = var.users_default_tags
-
-  depends_on = [
-      module.iam_groups
-  ]
+    default_tags = var.role_default_tags
 }

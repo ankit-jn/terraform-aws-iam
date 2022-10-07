@@ -1,3 +1,21 @@
+output "force_mfa_policy_arn" {
+    description = "ARN of Force MFA Policy"
+    value = try(aws_iam_policy.force_mfa_policy[0].arn, "")
+}
+
+output "groups" {
+    value = { 
+        for group_name, group in aws_iam_group.this : 
+            group_name => 
+                {
+                    id   = group.id
+                    arn  = group.arn
+                    policies = local.group_policies[group_name]
+                    assumable_roles_policy = try(local.group_cross_account_policies[group_name], "")
+                }
+    }
+}
+
 output "users" {
     value = { 
         for user_name, user in aws_iam_user.this : 

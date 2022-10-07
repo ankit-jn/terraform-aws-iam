@@ -6,7 +6,7 @@ resource aws_iam_user "this" {
     force_destroy        = lookup(each.value, "force_destroy", "yes") == "yes" ? true : false
     permissions_boundary = lookup(each.value, "permissions_boundary", null)
 
-    tags = var.tags
+    tags = var.users_default_tags
 }
 
 resource aws_iam_user_login_profile "this" {
@@ -53,10 +53,10 @@ resource aws_iam_user_ssh_key "this" {
 
 resource aws_iam_user_policy_attachment "force_mfa_attachment" {
     for_each= { for user in var.users : user.name => user  
-                      if lookup(user, "force_mfa", "yes") == "yes"}
+                      if var.create_force_mfa_policy && lookup(user, "force_mfa", "yes") == "yes"}
 
     user = aws_iam_user.this[each.key].name
-    policy_arn = var.force_mfa_policy_arn
+    policy_arn =  aws_iam_policy.force_mfa_policy[0].arn
 }
 
 resource aws_iam_user_group_membership "groups" {
