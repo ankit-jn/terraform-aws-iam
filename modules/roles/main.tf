@@ -21,12 +21,12 @@ data aws_iam_policy_document "trust_policy" {
 
     statement {
         principals {
-        identifiers = split(",", each.value.trust_account_ids)
-        type = "AWS"
+            identifiers = split(",", each.value.trust_account_ids)
+            type = "AWS"
         }
 
         actions = [
-        "sts:AssumeRole"
+            "sts:AssumeRole"
         ]
 
         effect = "Allow"

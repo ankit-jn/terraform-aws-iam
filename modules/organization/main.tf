@@ -6,21 +6,65 @@ resource aws_organizations_organization "this" {
     aws_service_access_principals = var.aws_service_access_principals
     enabled_policy_types          = var.enabled_policy_types
     feature_set                   = var.feature_set
+
+    lifecycle {
+        ignore_changes = [
+            aws_service_access_principals,
+            enabled_policy_types,
+            feature_set
+        ]
+    }
 }
 
 ################################
 ## Organizational Units 
 ################################
 
-resource aws_organizations_organizational_unit "this" {
+resource aws_organizations_organizational_unit "level_1" {
 
-    for_each = { for ou in var.organization_units : ou.name => ou }
+    for_each = local.ou_level_1
 
-    name      = each.value.name
-    parent_id = length(each.value.parent_id) > 0 ? each.value.parent_id : aws_organizations_organization.this.roots[0].id
-    
+    name      = each.key
+    parent_id = aws_organizations_organization.this.roots[0].id
     tags      = merge(var.organization_default_tags, can(each.value.tags) ? each.value.tags : {})
 }
+
+resource aws_organizations_organizational_unit "level_2" {
+
+    for_each = local.ou_level_2
+
+    name      = each.key
+    parent_id = aws_organizations_organizational_unit.level_1[each.value.parent].id
+    tags      = merge(var.organization_default_tags, can(each.value.tags) ? each.value.tags : {})
+}
+
+resource aws_organizations_organizational_unit "level_3" {
+
+    for_each = local.ou_level_3
+
+    name      = each.key
+    parent_id = aws_organizations_organizational_unit.level_2[each.value.parent].id
+    tags      = merge(var.organization_default_tags, can(each.value.tags) ? each.value.tags : {})
+}
+
+resource aws_organizations_organizational_unit "level_4" {
+
+    for_each = local.ou_level_4
+
+    name      = each.key
+    parent_id = aws_organizations_organizational_unit.level_3[each.value.parent].id
+    tags      = merge(var.organization_default_tags, can(each.value.tags) ? each.value.tags : {})
+}
+
+resource aws_organizations_organizational_unit "level_5" {
+
+    for_each = local.ou_level_5
+
+    name      = each.key
+    parent_id = aws_organizations_organizational_unit.level_3[each.value.parent].id
+    tags      = merge(var.organization_default_tags, can(each.value.tags) ? each.value.tags : {})
+}
+
 
 ################################
 ##  Organizations Policy  
@@ -43,12 +87,12 @@ resource aws_organizations_policy "policy" {
     tags      = merge(var.organization_default_tags, can(each.value.tags) ? each.value.tags : {})
 }
 
-# resource aws_organizations_policy_attachment "policy_attachment" {
-#   count = length(var.target_id) > 0 ? length(var.target_id) : 0
+resource aws_organizations_policy_attachment "policy_attachment" {
+  for_each = local.policy_contents
 
-#   policy_id = local.policy_id[0]
-#   target_id = tolist(var.target_id)[count.index]
-# }
+  policy_id = aws_organizations_policy.policy[each.key].id
+  target_id = aws_organizations_organization.this.roots[0].id
+}
 
 ################################
 ##  Organizations Accounts 

@@ -1,5 +1,5 @@
 variable "account_alias" {
-    description = "(Required) The account alias"
+    description = "(Optional) The account alias"
     type        = string
     default     = ""
 }
@@ -17,7 +17,6 @@ variable "management_account" {
 }
 
 ## Organization Account Specific Variables
-
 variable aws_service_access_principals {
     description = "description"
     default     = []
