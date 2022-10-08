@@ -28,7 +28,7 @@ module "iam_management" {
     manage_account_password_policy  = var.manage_account_password_policy
     password_policy                 = var.password_policy
 
-    create_force_mfa_policy         = true
+    create_force_mfa_policy         = var.create_force_mfa_policy
     mfa_policy_tags                 = var.policy_default_tags
     
     groups = local.iam_groups

@@ -1,7 +1,9 @@
+### Create IAM Groups
 resource aws_iam_group "this" {
     for_each = { for group in var.groups: group.name => group }
 
     name = each.key
+    path = lookup(each.value, "path", "/")
 }
 
 ### Attachment of Policies to the Groups
@@ -18,7 +20,7 @@ resource aws_iam_group_policy_attachment "this" {
     ]
 }
 
-#### Policy for assuming roles Cross Account
+#### Policy document for assuming Cross Account roles
 data aws_iam_policy_document "cross_account" {
 
     for_each = { for group in var.groups: group.name => group
@@ -35,6 +37,7 @@ data aws_iam_policy_document "cross_account" {
     }
 }
 
+## The policy to allow assuming the Cross Account role
 resource aws_iam_policy "assume_role_policy" {
     for_each = { for group in var.groups: group.name => group
                         if  length(lookup(group, "assumable_roles", [])) > 0 }

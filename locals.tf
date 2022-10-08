@@ -29,8 +29,8 @@ locals {
                         name = role.name
                         description = lookup(role, "description", role.name)
                         path = lookup(role, "path", "/")
-                        tags = can(role.tags) ? role.tags : {}
                         max_session_duration    = lookup(role, "max_session_duration", 3600)
+                        force_detach_policies   = lookup(role, "force_detach_policies", false)
                         trust_account_ids = lookup(role, "trust_account_ids", "") != "" ? role.trust_account_ids : var.trust_account_ids
                         policy_arns = concat(
                             [for policy in try(role.policies.policy_arns, []):  {
@@ -42,5 +42,6 @@ locals {
                                 "arn" = module.iam_policies.policies[policy].arn
                                 }]
                         )
+                        tags = can(role.tags) ? role.tags : {}
                     }}
 }

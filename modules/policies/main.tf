@@ -9,7 +9,7 @@ data template_file "policy_template" {
     template = file("${path.root}/policies/${each.key}.json")
 }
 
-
+## The IAM Policies to be created
 resource aws_iam_policy "this" {
     for_each = local.policy_contents
 

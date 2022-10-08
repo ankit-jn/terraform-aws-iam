@@ -1,3 +1,5 @@
+
+### Create IAM Users
 resource aws_iam_user "this" {
     for_each= { for user in var.users : user.name => user }
 
@@ -9,6 +11,7 @@ resource aws_iam_user "this" {
     tags = var.users_default_tags
 }
 
+### Create IAM user login profile
 resource aws_iam_user_login_profile "this" {
 
     for_each= { for user in var.users : user.name => user  
@@ -24,6 +27,7 @@ resource aws_iam_user_login_profile "this" {
     }
 }
 
+## Provides an IAM access key if PGP Key is present
 resource aws_iam_access_key "this" {
     for_each= { for user in var.users : user.name => user  
                       if (lookup(user, "create_access_key", "no") == "yes") && (lookup(user, "pgp_key", "") != "")}
@@ -33,6 +37,7 @@ resource aws_iam_access_key "this" {
     status  = lookup(each.value, "access_key_status", "Active")
 }
 
+## Provides an IAM access key if OGP key is not present
 resource aws_iam_access_key "this_no_pgp" {
     for_each= { for user in var.users : user.name => user  
                       if (lookup(user, "create_access_key", "no") == "yes") && (lookup(user, "pgp_key", "") == "")}
@@ -41,6 +46,7 @@ resource aws_iam_access_key "this_no_pgp" {
     status  = lookup(each.value, "access_key_status", "Active")
 }
 
+### Uploads an SSH public key and associates it with the specified IAM user.
 resource aws_iam_user_ssh_key "this" {
     for_each= { for user in var.users : user.name => user  
                         if lookup(user, "upload_ssh_key", "no") == "yes"}
@@ -51,6 +57,7 @@ resource aws_iam_user_ssh_key "this" {
     status      = lookup(each.value, "ssh_key_status", "active")
 }
 
+## Attach MFA force Policy to the user
 resource aws_iam_user_policy_attachment "force_mfa_attachment" {
     for_each= { for user in var.users : user.name => user  
                       if var.create_force_mfa_policy && lookup(user, "force_mfa", "yes") == "yes"}
@@ -59,10 +66,15 @@ resource aws_iam_user_policy_attachment "force_mfa_attachment" {
     policy_arn =  aws_iam_policy.force_mfa_policy[0].arn
 }
 
+## Add users to the groups
 resource aws_iam_user_group_membership "groups" {
     for_each= { for user in var.users : user.name => user 
                     if lookup(user, "groups", "") != ""}
 
     user    = aws_iam_user.this[each.key].name
     groups  = split(",", each.value.groups)
+
+    depends_on = [
+      aws_iam_group.this
+    ]
 }

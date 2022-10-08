@@ -4,6 +4,10 @@ output "force_mfa_policy_arn" {
 }
 
 output "groups" {
+    description = <<EOF
+Map of all the IAM Groups that are provisioned 
+where each entry of the map is again a map of the Group attributes like its ARN, and attached IAM policies
+EOF
     value = { 
         for group_name, group in aws_iam_group.this : 
             group_name => 
@@ -17,6 +21,11 @@ output "groups" {
 }
 
 output "users" {
+    description = <<EOF
+Map of all the IAM Users that are provisioned 
+where each entry of the map is again a map of the User attributes, login profile details, 
+and optionally the groups which the user will be part of.
+EOF
     value = { 
         for user_name, user in aws_iam_user.this : 
             user_name => 

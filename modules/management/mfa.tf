@@ -1,3 +1,4 @@
+## MFA IAM Policy Document
 data aws_iam_policy_document "force_mfa_policy_document" {
 
     count = var.create_force_mfa_policy ? 1 : 0
@@ -62,6 +63,7 @@ data aws_iam_policy_document "force_mfa_policy_document" {
     }
 }
 
+## MFA IAM Policy
 resource aws_iam_policy "force_mfa_policy" {
     count = var.create_force_mfa_policy ? 1 : 0
 

@@ -1,5 +1,5 @@
 variable "account_alias" {
-    description = "(Optional) The account alias"
+    description = "(Required) The account alias"
     type        = string
     default     = ""
 }
@@ -18,47 +18,76 @@ variable "management_account" {
 
 ## Organization Account Specific Variables
 variable aws_service_access_principals {
-    description = "description"
+    description = <<EOF
+(Optional) List of AWS service principal names for which you want 
+to enable integration with your organization.
+EOF
     default     = []
 }
 
 variable enabled_policy_types {
-    description = "List of Organizations Policy Types to enable in the Organization Root"
+    description = <<EOF
+(Optional) List of Organizations policy types to enable in the Organization Root.
+Valid policy types: AISERVICES_OPT_OUT_POLICY, BACKUP_POLICY, SERVICE_CONTROL_POLICY, TAG_POLICY
+EOF
     default     = []
 }
 
 variable feature_set {
-    description = ""
+    description = "(Optional) Specify \"ALL\" (default) or \"CONSOLIDATED_BILLING\"."
     type        = string
     default     = "ALL"
 }
 
 variable organization_units {
-    description = ""
+    description = <<EOF
+(Optional) List of Map for Organization Units witht the following Key Pairs:
+
+name - The name for the organizational unit
+parent - (Optional) The name the parent organizational unit; If not given; Root will be the parent
+tags - (Optional) A map of tags to assign to the OU resource.
+
+Note: OU hierarchy upto Level 5 is supported in this codebase
+EOF
     default     = []
 }
 
 variable "organizations_policies" {
-    description = "List of Policies to create"
+    description = <<EOF
+(Optional) List of Map for organizations Policies with the follwoing Key Pairs:
+
+name - (Required) The friendly name to assign to the policy.
+description - (Optional) A description to assign to the policy.
+type -  (Optional) The type of policy to create. 
+        Valid values are AISERVICES_OPT_OUT_POLICY, BACKUP_POLICY, SERVICE_CONTROL_POLICY (SCP), and TAG_POLICY.
+        Default: SERVICE_CONTROL_POLICY
+tags - (Optional) A map of tags to assign to the policy.
+
+Note: Policy content to be add to the new policy will be read from the JSON document 
+      JSON document must be placed in the directory "org_policies" under root directory. 
+      The naming format of the file: <Value set in name property>.json
+EOF
     default = []
 } 
 
 variable "organizations_accounts" {
-    description = "List of Organization Accounts"
-    type = list(object({
-                    name      = string
-                    email     = string
-                    role_name = string
-                    tags = map(string)
-                }))
+    description = <<EOF
+(Optional) List of Map for member accounts to be created in the current organization with the following Key pais:
+
+name - (Required) Friendly name for the member account.
+email - (Required) Email address of the owner to assign to the new member account.
+role_name - (Optional) The name of an IAM role that Organizations automatically preconfigures in the new member account. 
+access_to_billing - (Optional) If set to ALLOW, the new account enables IAM users and roles to access account billing 
+                    information if they have the required permissions. Default - ALLOW
+tags - (Optional) A map of tags to assign to the memeber Account resource.
+EOF
     default = []
 } 
-
 
 ## Management Account Specific Variables
 
 variable "manage_account_password_policy" {
-    description = "Flag to decide if manage account Password Policy"
+    description = "Flag to decide if Account Password Management Policy should be applied"
     type        = bool
     default     = true
 }
@@ -83,18 +112,45 @@ EOF
 }
 
 variable "create_force_mfa_policy" {
-    description = "ARN of FOrce MFA policy"
+    description = "Flag to decide if MFA enforcement policy should be created"
     type        = bool
     default     = true
 }
 
 variable "policies" {
-    description = "List of Policies to create"
+    description = <<EOF
+(Optional) List of Map for IAM Policies with the follwoing Key Pairs:
+
+name - (Required) The name of the policy. 
+description - (Optional) Description of the IAM policy. Default: Policy Name
+path - (Optional, default "/") Path in which to create the policy.
+tags - (Optional) A map of tags to assign to the policy.
+
+Note: Policy content to be add to the new policy will be read from the JSON document 
+      JSON document must be placed in the directory "policies" under root directory. 
+      The naming format of the file: <Value set in name property>.json
+EOF
     default = []
 } 
 
 variable "roles" {
-    description = "List of Roles to create"
+    description = <<EOF
+(Optional) List of Map for IAM Roles with the follwoing Key Pairs:
+
+name - (Required) Friendly name of the IAM role. 
+description - (Optional, default role name) Description of the IAM Role. Default: Role Name
+path - (Optional, default "/") Path in which to create the Role.
+max_session_duration - (Optional, default 3600) Maximum session duration (in seconds) that you want to set for the specified role.
+force_detach_policies - (Optional, default false) Whether to force detaching any policies the role has before destroying it.
+trust_account_ids - Comma separated Account IDs to be trusted in case of Cross Account roles
+tags - (Optional) A map of tags to assign to the policy.
+
+policies - The Map of 2 different type of Policies where 
+Map key - Policy Type [There could be 2 different values : `policy_names`, `policy_names`]<br>
+Map Value - A List of Policies as stated below
+            policy_names: List of Policy which will be provisioned as part of IAC 
+            policy_arns: List of ARN of the policies which are provisioned out of this IAC
+EOF
     default = []
 } 
 
@@ -105,12 +161,54 @@ variable "trust_account_ids" {
 }
 
 variable "groups" {
-    description = "List IAM Group to be created along with policies to be assigned"
+    description = <<EOF
+(Optional) List of Map for IAM Groups with the follwoing Key Pairs:
+
+name - (Required) The group's name.
+path - (Optional, default "/") Path in which to create the group.
+
+policies - The Map of 2 different type of Policies which will be applied on Group, where 
+Map key - Policy Type [There could be 2 different values : `policy_names`, `policy_names`]<br>
+Map Value - A List of Policies as stated below
+            policy_names: List of Policy which will be provisioned as part of IAC 
+            policy_arns: List of ARN of the policies which are provisioned out of this IAC
+
+assumable_roles - (Optional, default []) The list of ARNs of the Cross Account Role which can be assumed by the IAM principals part of this group.
+EOF
     default     = []
 }
 
 variable "users" {
-    description = "List of Users to create"
+    description = <<EOF
+(Optional) List of Map for IAM Users with the follwoing Key Pairs:
+
+name - (Required) The user's name.
+path - (Optional, default "/") Path in which to create the group.
+force_destroy - (Optional, default "yes") When destroying this user, destroy even if 
+                it has non-Terraform-managed IAM access keys, login profile or MFA devices. 
+permissions_boundary - (Optional) The ARN of the policy that is used to set the permissions 
+                       boundary for the user.
+
+create_login_profile - (Optional, default "no") Manages an IAM User Login Profile
+pgp_key - (Optional, default "") Either a base-64 encoded PGP public key, or 
+          a keybase username in the form keybase:username
+password_length - (Optional, default 32) The length of the generated password on resource creation.
+password_reset_required - (Optional, default "yes") Whether the user should be forced 
+                          to reset the generated password on resource creation.
+
+create_access_key - (Optional, default "no") Provides an IAM access key.
+access_key_status - (Optional, default "Active") Access key status to apply.
+
+upload_ssh_key - (Optional, default "no") Whether to upload SSH public key
+encoding - (Optional, default "SSH") Specifies the public key encoding format to use in the response.
+public_key - (Optional, default "no") (Required) The SSH public key. The public key must be encoded in ssh-rsa format or PEM format.
+ssh_key_status - (Optional, default "active") (Optional) The status to assign to the SSH public key.
+
+force_mfa - (Optional, default "yes") Whether to enforce IAM user for MFA
+            Only applies when create_force_mfa_policy is true
+
+groups - (Optional) Comma separated value of the IAM groups
+EOF
     default = []
 } 
 

@@ -1,5 +1,5 @@
 ###############################
-## Organization
+## Create Organization
 ################################
 
 resource aws_organizations_organization "this" {
@@ -17,9 +17,9 @@ resource aws_organizations_organization "this" {
 }
 
 ################################
-## Organizational Units 
+## Create Organizational Units 
 ################################
-
+# Top level OUs in the hierarchy
 resource aws_organizations_organizational_unit "level_1" {
 
     for_each = local.ou_level_1
@@ -29,6 +29,7 @@ resource aws_organizations_organizational_unit "level_1" {
     tags      = merge(var.organization_default_tags, can(each.value.tags) ? each.value.tags : {})
 }
 
+# Second level OUs in the hierarchy
 resource aws_organizations_organizational_unit "level_2" {
 
     for_each = local.ou_level_2
@@ -38,6 +39,7 @@ resource aws_organizations_organizational_unit "level_2" {
     tags      = merge(var.organization_default_tags, can(each.value.tags) ? each.value.tags : {})
 }
 
+# Third level OUs in the hierarchy
 resource aws_organizations_organizational_unit "level_3" {
 
     for_each = local.ou_level_3
@@ -47,6 +49,7 @@ resource aws_organizations_organizational_unit "level_3" {
     tags      = merge(var.organization_default_tags, can(each.value.tags) ? each.value.tags : {})
 }
 
+# Fourth level OUs in the hierarchy
 resource aws_organizations_organizational_unit "level_4" {
 
     for_each = local.ou_level_4
@@ -56,6 +59,7 @@ resource aws_organizations_organizational_unit "level_4" {
     tags      = merge(var.organization_default_tags, can(each.value.tags) ? each.value.tags : {})
 }
 
+# Fifth level OUs in the hierarchy
 resource aws_organizations_organizational_unit "level_5" {
 
     for_each = local.ou_level_5
@@ -65,9 +69,8 @@ resource aws_organizations_organizational_unit "level_5" {
     tags      = merge(var.organization_default_tags, can(each.value.tags) ? each.value.tags : {})
 }
 
-
 ################################
-##  Organizations Policy  
+##  Manage Organizations Policy  
 ################################
 
 data template_file "policy_template" {
@@ -87,6 +90,7 @@ resource aws_organizations_policy "policy" {
     tags      = merge(var.organization_default_tags, can(each.value.tags) ? each.value.tags : {})
 }
 
+# Attach the Organization Policy to the Root
 resource aws_organizations_policy_attachment "policy_attachment" {
   for_each = local.policy_contents
 
@@ -94,9 +98,10 @@ resource aws_organizations_policy_attachment "policy_attachment" {
   target_id = aws_organizations_organization.this.roots[0].id
 }
 
-################################
-##  Organizations Accounts 
-################################
+##############################################
+##  Create Member account in the Organization
+##############################################
+
 resource aws_organizations_account "this" {
 
     for_each = { for account in var.organizations_accounts : account.name => account }
@@ -105,6 +110,7 @@ resource aws_organizations_account "this" {
     email     = each.value.email
     parent_id = aws_organizations_organization.this.roots[0].id
     role_name = each.value.role_name
+    iam_user_access_to_billing = lookup(each.value, "access_to_billing", "ALLOW")
 
     tags      = merge(var.organization_default_tags, each.value.tags)
 }
