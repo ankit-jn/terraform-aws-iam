@@ -1,3 +1,16 @@
+output "organization" {
+    description = "Organization Attributes"
+    value = {
+                id = aws_organizations_organization.this.id
+                arn = aws_organizations_organization.this.arn
+                master_account_id = aws_organizations_organization.this.master_account_id
+                master_account_arn = aws_organizations_organization.this.master_account_arn
+                master_account_email = aws_organizations_organization.this.master_account_email
+                accounts = aws_organizations_organization.this.accounts
+                non_master_accounts = aws_organizations_organization.this.non_master_accounts
+            }
+}
+
 output "organizations_accounts" {
     description = <<EOF
 Map of all the Organization accounts that are created as a member of the organization 
