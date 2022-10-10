@@ -1,6 +1,6 @@
 output "signin_url" {
     description = "SignIn URL based on alias"
-    value       = format("https://%s.signin.aws.amazon.com/console", aws_iam_account_alias.this[0].account_alias)
+    value       = try(format("https://%s.signin.aws.amazon.com/console", aws_iam_account_alias.this[0].account_alias), "")
 }
 
 output "organization" {
@@ -62,3 +62,12 @@ EOF
     value       = try(module.iam_management[0].users, {})
 }
 
+
+output "users_credentials" {
+    description = <<EOF
+Map of all the IAM Users that are provisioned 
+where each entry of the map is again a map of the User login profile details
+EOF
+    sensitive = true
+    value = try(module.iam_management[0].users_crdentials, {})
+}
