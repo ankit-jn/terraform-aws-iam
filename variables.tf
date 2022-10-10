@@ -145,8 +145,8 @@ force_detach_policies - (Optional, default false) Whether to force detaching any
 trust_account_ids - Comma separated Account IDs to be trusted in case of Cross Account roles
 tags - (Optional) A map of tags to assign to the policy.
 
-policies - The Map of 2 different type of Policies where 
-Map key - Policy Type [There could be 2 different values : `policy_names`, `policy_names`]<br>
+policy_map - The Map of 2 different type of Policies where 
+Map key - Policy Type [There could be 2 different values : `policy_names`, `policy_arns`]
 Map Value - A List of Policies as stated below
             policy_names: List of Policy which will be provisioned as part of IAC 
             policy_arns: List of ARN of the policies which are provisioned out of this IAC
@@ -167,8 +167,8 @@ variable "groups" {
 name - (Required) The group's name.
 path - (Optional, default "/") Path in which to create the group.
 
-policies - The Map of 2 different type of Policies which will be applied on Group, where 
-Map key - Policy Type [There could be 2 different values : `policy_names`, `policy_names`]<br>
+policy_map - The Map of 2 different type of Policies which will be applied on Group, where 
+Map key - Policy Type [There could be 2 different values : `policy_names`, `policy_arns`]<br>
 Map Value - A List of Policies as stated below
             policy_names: List of Policy which will be provisioned as part of IAC 
             policy_arns: List of ARN of the policies which are provisioned out of this IAC

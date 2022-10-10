@@ -3,7 +3,7 @@ resource aws_iam_group "this" {
     for_each = { for group in var.groups: group.name => group }
 
     name = each.key
-    path = lookup(each.value, "path", "/")
+    path = each.value.path
 }
 
 ### Attachment of Policies to the Groups

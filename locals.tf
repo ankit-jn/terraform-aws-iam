@@ -12,12 +12,13 @@ locals {
         
     iam_groups = [ for group in var.groups : {
                         name = group.name
+                        path = lookup(group, "path", "/")
                         policy_arns = concat(
-                            [for policy in try(group.policies.policy_arns, []):  {
+                            [for policy in try(group.policy_map.policy_arns, []):  {
                                 "name" = policy
                                 "arn" = policy
                                 }],
-                            [for policy in  try(group.policies.policy_names, []):  {
+                            [for policy in  try(group.policy_map.policy_names, []):  {
                                 "name" = policy
                                 "arn" = module.iam_policies.policies[policy].arn
                                 }]
@@ -33,11 +34,11 @@ locals {
                         force_detach_policies   = lookup(role, "force_detach_policies", false)
                         trust_account_ids = lookup(role, "trust_account_ids", "") != "" ? role.trust_account_ids : var.trust_account_ids
                         policy_arns = concat(
-                            [for policy in try(role.policies.policy_arns, []):  {
+                            [for policy in try(role.policy_map.policy_arns, []):  {
                                 "name" = policy
                                 "arn" = policy
                                 }],
-                            [for policy in  try(role.policies.policy_names, []):  {
+                            [for policy in  try(role.policy_map.policy_names, []):  {
                                 "name" = policy
                                 "arn" = module.iam_policies.policies[policy].arn
                                 }]
