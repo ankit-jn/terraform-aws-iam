@@ -194,6 +194,27 @@ Policy content to be add to the new policy will be read from the JSON document.<
 | <a name="policy_map"></a> [policy_map](#input\_policies) | The Map of 2 different type of Policies to be attached to this group where,<br><b>Map Key:</b> Policy Type [There could be 2 different values : `policy_names`, `policy_arns`]<br><b>Map Value:</b> A List of Policies as stated below:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. policy_names: List of Policy which will be provisioned as part of IAC defined in property `policies`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. policy_arns: List of ARN of the policies which are provisioned out of this IAC | `map` | `{}` | no |  |
 | <a name="assumable_roles"></a> [assumable_roles](#input\_assumable\_roles) | The list of ARNs of the Cross Account Role which can be assumed by the IAM principals part of this group. | `list(string)` | `[]` | no |  |
 
+#### user
+
+| Name | Description | Type | Default | Required | Example|
+|:------|:------|:------|:------|:------:|:------|
+| <a name="name"></a> [name](#input\_name) | The user's name. | `string` |  | yes |  |
+| <a name="path"></a> [path](#input\_path) | Path in which to create the group. | `string` | `"/"` | no |  |
+| <a name="force_destroy"></a> [force_destroy](#input\_force\_destroy) | hen destroying this user, destroy even if it has non-Terraform-managed IAM access keys, login profile or MFA devices. | `string` | `"yes"` | no |  |
+| <a name="permissions_boundary"></a> [permissions_boundary](#input\_permissions\_boundary) | The ARN of the policy that is used to set the permissions boundary for the user. | `string` |  | no |  |
+| <a name="create_login_profile"></a> [create_login_profile](#input\_create\_login\_profile) | Manages an IAM User Login Profile | `string` | `"no"` | no |  |
+| <a name="pgp_key_file"></a> [pgp_key_file](#input\_pgp\_key\_file) | A base-64 encoded PGP public key file name: Has to be stored in folder "/keys/pgp/" at the root  | `string` |  | no |  |
+| <a name="password_length"></a> [password_length](#input\_password\_length) | The length of the generated password on resource creation. | `number` | `32` | no |  |
+| <a name="password_reset_required"></a> [password_reset_required](#input\_password\_reset\_required) | Whether the user should be forced to reset the generated password on resource creation. | `string` | `"yes"` | no |  |
+| <a name="create_access_key"></a> [create_access_key](#input\_create\_access\_key) | Provides an IAM access key. | `string` | `"no"` | no |  |
+| <a name="access_key_status"></a> [access_key_status](#input\_access\_key\_status) | Access key status to apply | `string` | `"Active"` | no |  |
+| <a name="upload_ssh_key"></a> [upload_ssh_key](#input\_upload\_ssh\_key) | Whether to upload SSH public key | `string` | `"no"` | no |  |
+| <a name="encoding"></a> [encoding](#input\_encoding) | Specifies the public key encoding format to use in the response. | `string` | `"SSH"` | no |  |
+| <a name="ssh_public_key_file"></a> [ssh_public_key_file](#input\_ssh\_public\_key\_file) | SSH Public Key file name (Encoded SSH public key in ssh-rsa format): Has to be stored in folder "/keys/ssh/" at the root. | `string` |  | no |  |
+| <a name="ssh_key_status"></a> [ssh_key_status](#input\_ssh\_key\_status) | The status to assign to the SSH public key. | `string` | `"Active"` | no |  |
+| <a name="force_mfa"></a> [force_mfa](#input\_force\_mfa) | Whether to enforce IAM user for MFA | `string` | `"yes"` | no |  |
+| <a name="groups"></a> [groups](#input\_groups) | Comma separated value of the IAM groups | `string` |  | no |  |
+
 ## Outputs
 
 | Name | Type | Description |
