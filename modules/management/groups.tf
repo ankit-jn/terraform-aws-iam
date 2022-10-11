@@ -27,12 +27,8 @@ data aws_iam_policy_document "cross_account" {
                             if  length(lookup(group, "assumable_roles", [])) > 0 }
 
     statement {
-        sid = "${each.key}-AllowAssumingRolesCrossAccount"
-
         actions = ["sts:AssumeRole"]
-
         effect = "Allow"
-
         resources = lookup(each.value, "assumable_roles", [])
     }
 }
