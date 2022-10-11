@@ -4,7 +4,7 @@ data aws_iam_policy_document "force_mfa_policy_document" {
     count = var.create_force_mfa_policy ? 1 : 0
 
     statement {
-        sid = "MFA-AllowViewAccountInfo"
+        sid = "AllowViewAccountInfo"
         effect = "Allow"
         actions = [
             "iam:ListVirtualMFADevices",
@@ -14,7 +14,7 @@ data aws_iam_policy_document "force_mfa_policy_document" {
     }
 
     statement {
-        sid = "MFA-AllowManageOwnVirtualMFADevice"
+        sid = "AllowManageOwnVirtualMFADevice"
         effect = "Allow"
         actions = [
             "iam:CreateVirtualMFADevice",
@@ -24,7 +24,7 @@ data aws_iam_policy_document "force_mfa_policy_document" {
     }
 
     statement {
-        sid = "MFA-AllowManageOwnUserMFA"
+        sid = "AllowManageOwnUserMFA"
         effect = "Allow"
         actions = [
             "iam:DeactivateMFADevice",
@@ -39,7 +39,7 @@ data aws_iam_policy_document "force_mfa_policy_document" {
     }
 
     statement {
-        sid = "MFA-DenyAllExceptListedIfNoMFA"
+        sid = "DenyAllExceptListedIfNoMFA"
         effect = "Deny"
         not_actions = [
             "iam:CreateVirtualMFADevice",
