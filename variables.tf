@@ -10,8 +10,8 @@ variable "organization_account" {
     default = false
 }
 
-variable "management_account" {
-    description = "Whether account is for management [i.e. user, group, Policy Management] (could be a part of AWS organization)?"
+variable "identity_account" {
+    description = "Whether account is for identity management [i.e. user, group, Policy Management] (could be a part of AWS organization)?"
     type = bool
     default = false
 }

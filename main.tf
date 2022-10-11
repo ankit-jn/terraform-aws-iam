@@ -23,7 +23,7 @@ module "iam_organization" {
 module "iam_management" {
     source = "./modules/management"
 
-    count = var.management_account ? 1 : 0
+    count = var.identity_account ? 1 : 0
 
     manage_account_password_policy  = var.manage_account_password_policy
     password_policy                 = var.password_policy
