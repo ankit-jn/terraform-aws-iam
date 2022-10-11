@@ -37,12 +37,20 @@ EOF
     value = try(module.iam_policies.policies, {})
 }
 
-output "roles" {
+output "trusted_account_roles" {
     description = <<EOF
-Map of all the IAM Roles that are provisioned 
+Map of AWS account trust based IAM Roles that are provisioned 
 where each entry of the map is again a map of the Role attributes
 EOF
-    value       = try(module.iam_roles.roles, {})
+    value = try(module.iam_roles.trusted_account_roles, {})
+}
+
+output "service_linked_roles" {
+    description = <<EOF
+Map of AWS Service linked IAM Roles that are provisioned 
+where each entry of the map is again a map of the Role attributes
+EOF
+    value = try(module.iam_roles.service_linked_roles, {})
 }
 
 output "groups" {

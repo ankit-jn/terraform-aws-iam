@@ -26,13 +26,13 @@ locals {
                         assumable_roles = try(group.assumable_roles, [])
                     }] 
 
-    iam_roles = {for role_name, role in var.roles : role_name => {
-                        name = role.name
+    trusted_account_roles = {for role_name, role in var.trusted_account_roles : role_name => {
+                        name        = role.name
                         description = lookup(role, "description", role.name)
-                        path = lookup(role, "path", "/")
+                        path        = lookup(role, "path", "/")
                         max_session_duration    = lookup(role, "max_session_duration", 3600)
                         force_detach_policies   = lookup(role, "force_detach_policies", false)
-                        trust_account_ids = lookup(role, "trust_account_ids", "") != "" ? role.trust_account_ids : var.trust_account_ids
+                        account_ids       = role.account_ids
                         policy_arns = concat(
                             [for policy in try(role.policy_map.policy_arns, []):  {
                                 "name" = policy
@@ -43,6 +43,26 @@ locals {
                                 "arn" = module.iam_policies.policies[policy].arn
                                 }]
                         )
-                        tags = can(role.tags) ? role.tags : {}
+                        tags = lookup(role, "tags", {})
+                    }}
+
+    service_linked_roles = {for role_name, role in var.service_linked_roles : role_name => {
+                        name        = role.name
+                        description = lookup(role, "description", role.name)
+                        path        = lookup(role, "path", "/")
+                        max_session_duration    = lookup(role, "max_session_duration", 3600)
+                        force_detach_policies   = lookup(role, "force_detach_policies", false)
+                        service_names       = role.service_names
+                        policy_arns = concat(
+                            [for policy in try(role.policy_map.policy_arns, []):  {
+                                "name" = policy
+                                "arn" = policy
+                                }],
+                            [for policy in  try(role.policy_map.policy_names, []):  {
+                                "name" = policy
+                                "arn" = module.iam_policies.policies[policy].arn
+                                }]
+                        )
+                        tags = lookup(role, "tags", {})
                     }}
 }

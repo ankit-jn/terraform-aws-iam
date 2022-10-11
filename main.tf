@@ -48,8 +48,8 @@ module "iam_policies" {
 module "iam_roles" {
     source = "./modules/roles"  
 
-    trust_account_ids = var.trust_account_ids
-    roles = local.iam_roles
+    trusted_account_roles = local.trusted_account_roles
+    service_linked_roles = local.service_linked_roles
 
     default_tags = var.role_default_tags
 }
