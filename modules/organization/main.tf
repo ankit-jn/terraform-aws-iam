@@ -26,7 +26,11 @@ resource aws_organizations_organizational_unit "level_1" {
 
     name      = each.key
     parent_id = aws_organizations_organization.this.roots[0].id
-    tags      = merge(var.organization_default_tags, can(each.value.tags) ? each.value.tags : {})
+    tags = merge(
+            {"Name" = format("%s", each.key)}, 
+            var.organization_default_tags, 
+            lookup(each.value, "tags", {})
+        )
 }
 
 # Second level OUs in the hierarchy
@@ -36,7 +40,11 @@ resource aws_organizations_organizational_unit "level_2" {
 
     name      = each.key
     parent_id = aws_organizations_organizational_unit.level_1[each.value.parent].id
-    tags      = merge(var.organization_default_tags, can(each.value.tags) ? each.value.tags : {})
+    tags = merge(
+            {"Name" = format("%s", each.key)}, 
+            var.organization_default_tags, 
+            lookup(each.value, "tags", {})
+        )
 }
 
 # Third level OUs in the hierarchy
@@ -46,7 +54,11 @@ resource aws_organizations_organizational_unit "level_3" {
 
     name      = each.key
     parent_id = aws_organizations_organizational_unit.level_2[each.value.parent].id
-    tags      = merge(var.organization_default_tags, can(each.value.tags) ? each.value.tags : {})
+    tags = merge(
+            {"Name" = format("%s", each.key)}, 
+            var.organization_default_tags, 
+            lookup(each.value, "tags", {})
+        )
 }
 
 # Fourth level OUs in the hierarchy
@@ -56,7 +68,11 @@ resource aws_organizations_organizational_unit "level_4" {
 
     name      = each.key
     parent_id = aws_organizations_organizational_unit.level_3[each.value.parent].id
-    tags      = merge(var.organization_default_tags, can(each.value.tags) ? each.value.tags : {})
+    tags = merge(
+            {"Name" = format("%s", each.key)}, 
+            var.organization_default_tags, 
+            lookup(each.value, "tags", {})
+        )
 }
 
 # Fifth level OUs in the hierarchy
@@ -66,7 +82,11 @@ resource aws_organizations_organizational_unit "level_5" {
 
     name      = each.key
     parent_id = aws_organizations_organizational_unit.level_3[each.value.parent].id
-    tags      = merge(var.organization_default_tags, can(each.value.tags) ? each.value.tags : {})
+    tags = merge(
+            {"Name" = format("%s", each.key)}, 
+            var.organization_default_tags, 
+            lookup(each.value, "tags", {})
+        )
 }
 
 ################################
@@ -87,7 +107,11 @@ resource aws_organizations_policy "policy" {
     type        = each.value.type
     content     = each.value.policyjson
 
-    tags      = merge(var.organization_default_tags, can(each.value.tags) ? each.value.tags : {})
+    tags = merge(
+            {"Name" = format("%s", each.value.name)}, 
+            var.organization_default_tags, 
+            lookup(each.value, "tags", {})
+        )
 }
 
 # Attach the Organization Policy to the Root
@@ -112,5 +136,9 @@ resource aws_organizations_account "this" {
     role_name = each.value.role_name
     iam_user_access_to_billing = lookup(each.value, "access_to_billing", "ALLOW")
 
-    tags      = merge(var.organization_default_tags, each.value.tags)
+    tags = merge(
+            {"Name" = format("%s", each.value.name)}, 
+            var.organization_default_tags, 
+            each.value.tags
+        )
 }
