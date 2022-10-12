@@ -31,7 +31,11 @@ EOF
                 {
                     arn             = user.arn
                     unique_id       = user.unique_id
-                    access_key_id   = try(aws_iam_access_key.this[user.name].id, aws_iam_access_key.this_no_pgp[user.name].id, "")
+                    
+                    access_key_id                   = try(local.user_creds[user_name].access_key_id, "")
+                    password_decrypt_command        = local.user_creds[user_name].need_password_decryption ? try("echo '${local.user_creds[user_name].encrypted_password}' | base64 --decode | keybase pgp decrypt", "") : ""
+                    secret_key_decrypt_command      = local.user_creds[user_name].need_secret_decryption ? try("echo '${local.user_creds[user_name].encrypted_secret}' | base64 --decode | keybase pgp decrypt", "") : ""
+                    
                     groups          = try(aws_iam_user_group_membership.groups[user.name].groups, [])
                 }
     }

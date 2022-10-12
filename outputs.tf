@@ -69,13 +69,3 @@ and optionally the groups which the user will be part of.
 EOF
     value       = try(module.iam_management[0].users, {})
 }
-
-
-output "users_credentials" {
-    description = <<EOF
-Map of all the IAM Users that are provisioned 
-where each entry of the map is again a map of the User login profile details
-EOF
-    sensitive = true
-    value = try(module.iam_management[0].users_crdentials, {})
-}
