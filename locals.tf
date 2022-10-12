@@ -23,7 +23,6 @@ locals {
                                 "arn" = module.iam_policies.policies[policy].arn
                                 }]
                         )
-                        assumable_roles = try(group.assumable_roles, [])
                     }] 
 
     trusted_account_roles = {for role_name, role in var.trusted_account_roles : role_name => {

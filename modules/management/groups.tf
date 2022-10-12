@@ -19,38 +19,3 @@ resource aws_iam_group_policy_attachment "this" {
         aws_iam_group.this
     ]
 }
-
-#### Policy document for assuming Cross Account roles
-data aws_iam_policy_document "cross_account" {
-
-    for_each = { for group in var.groups: group.name => group
-                            if  length(lookup(group, "assumable_roles", [])) > 0 }
-
-    statement {
-        actions = ["sts:AssumeRole"]
-        effect = "Allow"
-        resources = lookup(each.value, "assumable_roles", [])
-    }
-}
-
-## The policy to allow assuming the Cross Account role
-resource aws_iam_policy "assume_role_policy" {
-    for_each = { for group in var.groups: group.name => group
-                        if  length(lookup(group, "assumable_roles", [])) > 0 }
-
-    name   = "${each.key}-AssumeRolesPolicy"
-    description = "Developer group permissions."
-    policy = data.aws_iam_policy_document.cross_account[each.value.name].json
-}
-
-resource aws_iam_group_policy_attachment "cross_account" {
-    for_each = { for group in var.groups: group.name => group
-                        if  length(lookup(group, "assumable_roles", [])) > 0 }
-
-    group = each.value.name
-    policy_arn = aws_iam_policy.assume_role_policy[each.value.name].arn
-
-    depends_on = [
-        aws_iam_group.this
-    ]
-}

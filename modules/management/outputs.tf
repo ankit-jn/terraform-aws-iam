@@ -15,7 +15,6 @@ EOF
                     id   = group.id
                     arn  = group.arn
                     policies = try(local.group_policies[group_name], [])
-                    assumable_roles_policy = try(local.group_cross_account_policies[group_name], "")
                 }
     }
 }
