@@ -188,8 +188,6 @@ Map key - Policy Type [There could be 2 different values : `policy_names`, `poli
 Map Value - A List of Policies as stated below
             policy_names: List of Policy which will be provisioned as part of IAC 
             policy_arns: List of ARN of the policies which are provisioned out of this IAC
-
-assumable_roles - (Optional, default []) The list of ARNs of the Cross Account Role which can be assumed by the IAM principals part of this group.
 EOF
     default     = []
 }
