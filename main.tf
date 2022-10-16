@@ -50,6 +50,8 @@ module "iam_roles" {
 
     trusted_account_roles = local.trusted_account_roles
     service_linked_roles = local.service_linked_roles
+    trusted_account_roles_policies = local.all_trusted_account_roles_policies
+    service_linked_roles_policies = local.all_service_linked_roles_policies
 
     default_tags = var.role_default_tags
 }

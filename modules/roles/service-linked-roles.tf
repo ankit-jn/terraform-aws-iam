@@ -31,10 +31,10 @@ resource aws_iam_role "service_linked_roles" {
     tags = merge(var.default_tags, each.value.tags)
 }
 
-## Attachment of IAM role with the Policy
+# ## Attachment of IAM role with the Policy
 resource aws_iam_role_policy_attachment "service_linked_role_policy_attachment" {
     for_each = {
-      for attachment in local.service_linked_roles_policies : format("%s.%s", attachment.role_name, attachment.policy_name) => attachment
+      for k, v in merge(var.service_linked_roles_policies...) : k => v
     }
 
     role = each.value.role_name

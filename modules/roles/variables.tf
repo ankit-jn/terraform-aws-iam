@@ -9,12 +9,6 @@ max_session_duration - (Optional, default 3600) Maximum session duration (in sec
 force_detach_policies - (Optional, default false) Whether to force detaching any policies the role has before destroying it.
 account_ids - (Required) List of Account IDs to be trusted
 tags - (Optional) A map of tags to assign to the policy.
-
-policies - The Map of 2 different type of Policies where 
-Map key - Policy Type [There could be 2 different values : `policy_names`, `policy_names`]<br>
-Map Value - A List of Policies as stated below
-            policy_names: List of Policy which will be provisioned as part of IAC 
-            policy_arns: List of ARN of the policies which are provisioned out of this IAC
 EOF
     default = []
 }
@@ -30,14 +24,30 @@ max_session_duration - (Optional, default 3600) Maximum session duration (in sec
 force_detach_policies - (Optional, default false) Whether to force detaching any policies the role has before destroying it.
 service_names - (Required) List of Service domain to be trusted 
 tags - (Optional) A map of tags to assign to the policy.
-
-policies - The Map of 2 different type of Policies where 
-Map key - Policy Type [There could be 2 different values : `policy_names`, `policy_names`]<br>
-Map Value - A List of Policies as stated below
-            policy_names: List of Policy which will be provisioned as part of IAC 
-            policy_arns: List of ARN of the policies which are provisioned out of this IAC
 EOF
     default = []
+}
+
+variable "trusted_account_roles_policies" {
+    description = <<EOF
+List of policy Maps where
+Map key - "<Role name>.<Policy Name>"
+Map Value - A Map of 2 Attributes:
+        ame: The name of the Role
+        arn: ARN of the policy
+EOF
+    default = []
+}
+
+variable "service_linked_roles_policies" {
+    description = <<EOF
+List of policy Maps where
+Map key - "<Role name>.<Policy Name>"
+Map Value - A Map of 2 Attributes:
+        name: The name of the Role
+        arn: ARN of the policy
+EOF
+    default = []  
 }
 
 variable "default_tags" {

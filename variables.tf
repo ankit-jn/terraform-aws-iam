@@ -145,11 +145,9 @@ force_detach_policies - (Optional, default false) Whether to force detaching any
 account_ids - (Required) List of Account IDs to be trusted
 tags - (Optional) A map of tags to assign to the policy.
 
-policy_map - The Map of 2 different type of Policies where 
-Map key - Policy Type [There could be 2 different values : `policy_names`, `policy_arns`]
-Map Value - A List of Policies as stated below
-            policy_names: List of Policy which will be provisioned as part of IAC 
-            policy_arns: List of ARN of the policies which are provisioned out of this IAC
+policy_list - List of Policies to be attached where each entry will be map with following entries
+    name - Policy Name
+    arn - Policy ARN (if existing policy
 EOF
     default = []
 } 
@@ -166,11 +164,9 @@ force_detach_policies - (Optional, default false) Whether to force detaching any
 service_names - (Required) List of Service domain to be trusted 
 tags - (Optional) A map of tags to assign to the policy.
 
-policies - The Map of 2 different type of Policies where 
-Map key - Policy Type [There could be 2 different values : `policy_names`, `policy_names`]<br>
-Map Value - A List of Policies as stated below
-            policy_names: List of Policy which will be provisioned as part of IAC 
-            policy_arns: List of ARN of the policies which are provisioned out of this IAC
+policy_list - List of Policies to be attached where each entry will be map with following entries
+    name - Policy Name
+    arn - Policy ARN (if existing policy)
 EOF
     default = []
 }
