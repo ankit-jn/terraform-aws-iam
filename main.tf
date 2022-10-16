@@ -32,6 +32,7 @@ module "iam_management" {
     mfa_policy_tags                 = var.policy_default_tags
     
     groups = local.iam_groups
+    groups_policies = local.all_groups_policies
     users = var.users
     
     users_default_tags = var.users_default_tags

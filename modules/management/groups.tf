@@ -9,7 +9,7 @@ resource aws_iam_group "this" {
 ### Attachment of Policies to the Groups
 resource aws_iam_group_policy_attachment "this" {
     for_each = {
-      for attachment in local.policy_attachments : format("%s.%s", attachment.group_name, attachment.policy_name) => attachment
+      for k, v in merge(var.groups_policies...) : k => v
     }
 
     group = each.value.group_name

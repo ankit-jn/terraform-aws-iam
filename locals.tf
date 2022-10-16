@@ -13,17 +13,21 @@ locals {
     iam_groups = [ for group in var.groups : {
                         name = group.name
                         path = lookup(group, "path", "/")
-                        policy_arns = concat(
-                            [for policy in try(group.policy_map.policy_arns, []):  {
-                                "name" = policy
-                                "arn" = policy
-                                }],
-                            [for policy in  try(group.policy_map.policy_names, []):  {
-                                "name" = policy
-                                "arn" = module.iam_policies.policies[policy].arn
-                                }]
-                        )
                     }] 
+
+    groups_policies = {for group in var.groups : group.name => {
+                                        name    = group.name
+                                        policy  = {
+                                            for policy in try(group.policy_list, []):  
+                                                "${policy.name}" => (can(policy.arn) ? policy.arn : module.iam_policies.policies[policy.name].arn)
+                                                
+                                        }}}
+
+    all_groups_policies = flatten([for group_name, group in local.groups_policies: 
+                                                [for policy_name, policy_arn in group.policy : 
+                                                    { format("%s.%s", group_name, policy_name) = merge( {"group_name" = group_name}, 
+                                                                                                    {"policy_arn" = policy_arn}) }]])
+
 
     trusted_account_roles = {for role_name, role in var.trusted_account_roles : role_name => {
                         name        = role.name

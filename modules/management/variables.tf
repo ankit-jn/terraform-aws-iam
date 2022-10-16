@@ -34,14 +34,19 @@ variable "groups" {
 name - (Required) The group's name.
 path - (Optional, default "/") Path in which to create the group.
 
-policies - The Map of 2 different type of Policies which will be applied on Group, where 
-Map key - Policy Type [There could be 2 different values : `policy_names`, `policy_names`]<br>
-Map Value - A List of Policies as stated below
-            policy_names: List of Policy which will be provisioned as part of IAC 
-            policy_arns: List of ARN of the policies which are provisioned out of this IAC
-
 EOF
     default     = []
+}
+
+variable "groups_policies" {
+    description = <<EOF
+List of policy Maps where
+Map key - "<Group name>.<Policy Name>"
+Map Value - A Map of 2 Attributes:
+        name: The name of the Role
+        arn: ARN of the policy
+EOF
+    default = []  
 }
 
 variable "users" {
