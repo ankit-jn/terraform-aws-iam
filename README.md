@@ -80,7 +80,7 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="enabled_policy_types"></a> [enabled_policy_types](#input\_enabled\_policy\_types) | List of Organizations policy types to enable in the Organization Root.<br><b>Valid policy types:</b><br>1. AISERVICES_OPT_OUT_POLICY<br>2. BACKUP_POLICY<br>3. SERVICE_CONTROL_POLICY<br>4. TAG_POLICY | `list(string)` | `[]` | no | <pre>["SERVICE_CONTROL_POLICY"]<pre> |
 | <a name="feature_set"></a> [feature_set](#input\_feature\_set) | The organization features to use. <b>Valid Value:</b><br>1. ALL<br>2. CONSOLIDATED_BILLING | `string` | `"ALL"` | no |  |
 | <a name="organization_units"></a> [organization_units](#organization_units) | List of Map of Organization Units | `map` | `list(map)` | no | <pre>[<br>   {<br>     name = "R&D"<br>   },<br>   {<br>     name = "Dev"<br>     parent = "R&D"<br>   }<br>]<pre> |
-| <a name="organizations_policies"></a> [organizations_policies](#organizations\_policies) | List of Map for organizations Policies | `list(map)` | `[]` | no | <pre>[<br>   {<br>     name = "my-first-scp"<br>     description = "My First SCP"<br>     type = "SERVICE_CONTROL_POLICY"<br>     tags = {<br>       "name"="terraform training"<br>     }<br>   },<br>   {<br>     name = "my-second-scp"<br>     description = "My second SCP"<br>     type = "SERVICE_CONTROL_POLICY"<br>     }<br>]<pre> |
+| <a name="organizations_policies"></a> [organizations_policies](#organizations\_policies) | List of Map for organizations Policies | `list(map)` | `[]` | no | <pre>[<br>   {<br>     name = "my-first-scp"<br>     policy_file = "my-first-scp.json"<br>     description = "My First SCP"<br>     type = "SERVICE_CONTROL_POLICY"<br>     tags = {<br>       "name"="terraform training"<br>     }<br>   },<br>   {<br>     name = "my-second-scp"<br>     policy_file = "my-second-scp.json"<br>     description = "My second SCP"<br>     type = "SERVICE_CONTROL_POLICY"<br>     }<br>]<pre> |
 | <a name="organizations_accounts"></a> [organizations_accounts](#organizations\_accounts) | List of Map for member accounts to be created in the current organization | `list(map)` | `[]` | no | <pre>[<br>   {<br>     name = "terraform-training"<br>     email = "xxxx@xxxx.com"<br>     role_name = "owner"<br>     tags = {<br>       "name"="arj-development"<br>     }<br>   },<br>   {<br>     name = "arj-training"<br>     email = "zzzz@zzzz.com"<br>     role_name = "OWNER"<br>     }<br>]<pre> |
 
 #### Management Account Specific properties
@@ -97,7 +97,7 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 
 | Name | Description | Type | Default | Required | Example|
 |:------|:------|:------|:------|:------:|:------|
-| <a name="policies"></a> [policies](#policy) | List of IAM Policies configuration Map | `map` | `[]` | no | <pre>[<br>   {<br>     name = "arjstack-support-access"<br>     description = "Full Stack Development policy"<br>     path = "/"<br>   },<br>   {<br>     name = "dashboard-policy"<br>     description = "Dashboard policy"<br>     path = "/"<br>   }<br>]<pre> |
+| <a name="policies"></a> [policies](#policy) | List of IAM Policies configuration Map | `map` | `[]` | no | <pre>[<br>   {<br>     name = "arjstack-support-access"<br>     policy_file = "arjstack-support-access.json"<br>     description = "Full Stack Development policy"<br>     path = "/"<br>   },<br>   {<br>     name = "dashboard-policy"<br>     policy_file = "dashboard-policy.json"<br>     description = "Dashboard policy"<br>     path = "/"<br>   }<br>]<pre> |
 | <a name="trusted_account_roles"></a> [trusted_account_roles](#role) | List of IAM Roles configuration Map | `map` | `[]` | no | <pre>[<br>   {<br>     name = "ARJCrossAccountDevOpsRole"<br>     description = "ARJ Cross Account Devops Role"<br>     path = "/"<br>     account_ids = [<br>        "12 digit account id-1",<br>        "12 digit account id-2",<br>        .....<br>     ]<br>     policy_list = [<br>       {<br>         name = "arjstack-ci-cd-service-access"<br>       },<br>       {<br>         "name" = "AmazonDevOpsGuruReadOnlyAccess"<br>         "arn" = "arn:aws:iam::aws:policy/AmazonDevOpsGuruReadOnlyAccess"<br>       }<br>     ]<br>     tags = {"Purpose" = "DevOps"}<br>   },<br>]<br><pre> |
 | <a name="service_linked_roles"></a> [service_linked_roles](#role) | List of IAM Roles configuration Map | `map` | `[]` | no | <pre>[<br>   {<br>     name = "ARJS3SupportRole"<br>     description = "ARJ Cross Account Support Role"<br>     path = "/"<br>     service_names = [<br>        "ecs.amazonaws.com",<br>        "ec2.amazonaws.com"<br>        .....<br>     ]<br>     policy_list = [<br>       {<br>         name = "arjstack-s3-readonly-access"<br>       },<br>       {<br>         "name" = "AWSCloudTrail_ReadOnlyAccess"<br>         "arn" = "arn:aws:iam::aws:policy/AWSCloudTrail_ReadOnlyAccess"<br>       }<br>     ]<br>     tags = {"Purpose" = "Support"}<br>   },<br>]<br><pre> |
 | <a name="groups"></a> [groups](#group) | List of IAM Groups configuration Map | `map` | `[]` | no | <pre>[<br>   {<br>     name = "Leaders"<br>     policy_list = [<br>       {<br>         name = "full-stack-development-policy"<br>       },<br>       {<br>         "name" = "AdministratorAccess"<br>         "arn" = "arn:aws:iam::aws:policy/AdministratorAccess"<br>       }<br>     ]<br>   },<br>]<br><pre> |
@@ -125,13 +125,12 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 
 #### organizations_policies
 
-Policy content to be add to the new policy will be read from the JSON document.<br>
-&nbsp;&nbsp;&nbsp;- JSON document must be placed in the directory `org_policies` under root directory.<br>
-&nbsp;&nbsp;&nbsp;- The naming format of the file: <Value set in `name` property>.json
+- Policy content to be add to the policy will be read from the JSON document `policy_file` from the directory `org_policies` under root directory
 
 | Name | Description | Type | Default | Required | Example|
 |:------|:------|:------|:------|:------:|:------|
 | <a name="name"></a> [name](#input\_name) | The friendly name to assign to the policy. | `string` |  | yes |  |
+| <a name="policy_file"></a> [policy_file](#input\_policy\_file) | The policy file name. | `string` | `yes` | yes |  |
 | <a name="description"></a> [description](#input\_account\_alias) | A description to assign to the policy. | `string` | `"SERVICE_CONTROL_POLICY"` | no |  |
 | <a name="type"></a> [type](#input\_type) | The account alias | `string` |  | no |  |
 | <a name="tags"></a> [tags](#input\_tags) | A map of tags to assign to the Organization Policy | `map` | `{}` | no |  |
@@ -161,13 +160,12 @@ Policy content to be add to the new policy will be read from the JSON document.<
 
 #### policy
 
-Policy content to be add to the new policy will be read from the JSON document.<br>
-&nbsp;&nbsp;&nbsp;- JSON document must be placed in the directory `policies` under root directory.<br>
-&nbsp;&nbsp;&nbsp;- The naming format of the file: <Value set in `name` property>.json
+- Policy content to be add to the policy will be read from the JSON document `policy_file` from the directory `policies` under root directory
 
 | Name | Description | Type | Default | Required | Example|
 |:------|:------|:------|:------|:------:|:------|
 | <a name="name"></a> [name](#input\_name) | The name of the policy. | `string` | `yes` | yes |  |
+| <a name="policy_file"></a> [policy_file](#input\_policy\_file) | The policy file name. | `string` | `yes` | yes |  |
 | <a name="description"></a> [description](#input\_description) | Description of the IAM policy. | `string` | `<name of the policy>` | no |  |
 | <a name="path"></a> [path](#input\_path) | Path in which to create the policy. | `string` | `"/"` | no |  |
 | <a name="tags"></a> [tags](#input\_tags) | A map of tags to assign to the policy. | `{}` | `no` | no |  |

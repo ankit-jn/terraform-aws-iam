@@ -6,7 +6,7 @@ locals {
 data template_file "policy_template" {
     for_each = { for policy in var.policies: policy.name => policy } 
   
-    template = file("${path.root}/policies/${each.key}.json")
+    template = file("${path.root}/policies/${each.value.policy_file}")
 }
 
 ## The IAM Policies to be created

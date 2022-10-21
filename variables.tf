@@ -122,13 +122,15 @@ variable "policies" {
 (Optional) List of Map for IAM Policies with the follwoing Key Pairs:
 
 name - (Required) The name of the policy. 
+policy_file: (Required) Policy File name; Policy content to be add to the policy will be read from the
+              JSON document `<policy_file>` from the directory "policies" under root directory.
 description - (Optional) Description of the IAM policy. Default: Policy Name
 path - (Optional, default "/") Path in which to create the policy.
 tags - (Optional) A map of tags to assign to the policy.
 
 Note: Policy content to be add to the new policy will be read from the JSON document 
       JSON document must be placed in the directory "policies" under root directory. 
-      The naming format of the file: <Value set in name property>.json
+      The naming format of the file: <Value set in name property>
 EOF
     default = []
 } 
@@ -147,7 +149,7 @@ tags - (Optional) A map of tags to assign to the policy.
 
 policy_list - List of Policies to be attached where each entry will be map with following entries
     name - Policy Name
-    arn - Policy ARN (if existing policy
+    arn - Policy ARN (if existing policy)
 EOF
     default = []
 } 

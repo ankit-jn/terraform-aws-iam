@@ -96,7 +96,7 @@ resource aws_organizations_organizational_unit "level_5" {
 data template_file "policy_template" {
     for_each = { for policy in var.organizations_policies: policy.name => policy } 
     
-    template = file("${path.root}/org_policies/${each.key}.json")
+    template = file("${path.root}/org_policies/${each.value.policy_file}")
 }
 
 resource aws_organizations_policy "policy" {

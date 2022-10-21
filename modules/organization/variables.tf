@@ -30,9 +30,12 @@ variable organization_units {
     description = <<EOF
 (Optional) List of Map for Organization Units witht the following Key Pairs:
 
-name - The name for the organizational unit
-parent - (Optional) The name the parent organizational unit; If not given; Root will be the parent
-tags - (Optional) A map of tags to assign to the OU resource.
+name    : The name for the organizational unit
+          (Required)
+parent  : The name the parent organizational unit; If not given; Root will be the parent
+          (Optional)
+tags    : A map of tags to assign to the OU resource.
+          (Optional)
 
 Note: OU hierarchy upto Level 5 is supported in this codebase
 EOF
@@ -43,16 +46,18 @@ variable "organizations_policies" {
     description = <<EOF
 (Optional) List of Map for organizations Policies with the follwoing Key Pairs:
 
-name - (Required) The friendly name to assign to the policy.
-description - (Optional) A description to assign to the policy.
-type -  (Optional) The type of policy to create. 
-        Valid values are AISERVICES_OPT_OUT_POLICY, BACKUP_POLICY, SERVICE_CONTROL_POLICY (SCP), and TAG_POLICY.
-        Default: SERVICE_CONTROL_POLICY
-tags - (Optional) A map of tags to assign to the policy.
+name        : The friendly name to assign to the policy.
+              (Required)
+policy_file : Policy File name; Policy content to be add to the policy will be read from the
+              JSON document `<policy_file>` from the directory "org_policies" under root directory.
+              (Required)
+description : A description to assign to the policy.
+              (Optional)
+type        : The type of policy to create. Valid values are AISERVICES_OPT_OUT_POLICY, 
+              BACKUP_POLICY, SERVICE_CONTROL_POLICY (SCP), and TAG_POLICY.
+              (Optional, default `SERVICE_CONTROL_POLICY`)
+tags        : (Optional) A map of tags to assign to the policy.
 
-Note: Policy content to be add to the new policy will be read from the JSON document 
-      JSON document must be placed in the directory "org_policies" under root directory. 
-      The naming format of the file: <Value set in name property>.json
 EOF
     default = []
 } 
@@ -61,12 +66,18 @@ variable "organizations_accounts" {
     description = <<EOF
 (Optional) List of Map for member accounts to be created in the current organization with the following Key pais:
 
-name - (Required) Friendly name for the member account.
-email - (Required) Email address of the owner to assign to the new member account.
-role_name - (Optional) The name of an IAM role that Organizations automatically preconfigures in the new member account. 
-access_to_billing - (Optional) If set to ALLOW, the new account enables IAM users and roles to access account billing 
-                    information if they have the required permissions. Default - ALLOW
-tags - (Optional) A map of tags to assign to the memeber Account resource.
+name            : Friendly name for the member account.
+                  (Required)
+email           : Email address of the owner to assign to the new member account.
+                  (Required)
+role_name       : The name of an IAM role that Organizations automatically preconfigures
+                  in the new member account. 
+                  (Optional)
+access_to_billing: If set to ALLOW, the new account enables IAM users and roles to access 
+                   account billing information if they have the required permissions.
+                   (Optional, default `ALLOW`)
+tags            : A map of tags to assign to the memeber Account resource.
+                  (Optional)
 EOF
     default = []
 } 
