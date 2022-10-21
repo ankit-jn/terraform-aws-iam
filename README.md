@@ -6,11 +6,11 @@ A Terraform module for configuring IAM (Organization, Groups, Users, Polices, Ro
 ## Features
 - Organization
     - Create Account as AWS Organization
-    - Create Organization Units (Support upto 5 Level through this module)
+    - Create Organization Units (Support up to 5 Level through this module)
     - Apply Organization policies
     - Support for Creating Member Accounts of the organization
 - Management of IAM Groups, Users
-- Create Roles and Polcies and attach to IAM Groups
+- Create Roles and Policies and attach to IAM Groups
 - Enforce User to setup MFA
 
 Module supports 3 different typs of scenarios: 
@@ -22,7 +22,7 @@ Module supports 3 different typs of scenarios:
 
 Note: 
 - The module can work even if Organization structure is not there. In that case everything will be provisioned in the same AWS account (of course, no need of Cross account role features to be managed then)
-- The Organization and Management account can be clubed as well (though not a ideal practice)
+- The Organization and Management account can be clubbed as well (though not a ideal practice)
 
 Refer example section for different scenarios
 
