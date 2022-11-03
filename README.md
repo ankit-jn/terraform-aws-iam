@@ -86,11 +86,11 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 #### Management Account Specific properties
 ---
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="manage_account_password_policy"></a> [manage_account_password_policy](#input\_manage\_account\_password\_policy) | Flag to decide if Account Password Management Policy should be applied | `bool` | `true` | no |  |
-| <a name="password_policy"></a> [password_policy](#password\_policy) | Password Policy Management rules | `map(string)` | `{}` | no |  |
-| <a name="create_force_mfa_policy"></a> [create_force_mfa_policy](#input\_create\_force\_mfa\_policy) | Flag to decide if MFA enforcement policy should be created | `bool` | `true` | no |  |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="manage_account_password_policy"></a> [manage_account_password_policy](#input\_manage\_account\_password\_policy) | Flag to decide if Account Password Management Policy should be applied | `bool` | `true` | no |
+| <a name="password_policy"></a> [password_policy](#password\_policy) | Password Policy Management rules | `map(string)` | `{}` | no |
+| <a name="create_force_mfa_policy"></a> [create_force_mfa_policy](#input\_create\_force\_mfa\_policy) | Flag to decide if MFA enforcement policy should be created | `bool` | `true` | no |
 
 #### IAM resources [Policy, Role, Group, Users] Specific properties
 ---
@@ -106,115 +106,115 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 
 #### TAG Specific properties
 ---
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="organization_default_tags"></a> [organization_default_tags](#input\_organization\_default\_tags) | A map of tags to assign to all Organizational Resources. | `map` | `{}` | no | |
-| <a name="role_default_tags"></a> [role_default_tags](#input\_role\_default\_tags) | A map of tags to assign to all Roles. | `map` | `{}` | no | |
-| <a name="policy_default_tags"></a> [policy_default_tags](#input\_policy\_default\_tags) | A map of tags to assign to all Policies. | `map` | `{}` | no | |
-| <a name="users_default_tags"></a> [users_default_tags](#input\_users\_default\_tags) | A map of tags to assign to all Users. | `map` | `{}` | no | |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="organization_default_tags"></a> [organization_default_tags](#input\_organization\_default\_tags) | A map of tags to assign to all Organizational Resources. | `map` | `{}` | no |
+| <a name="role_default_tags"></a> [role_default_tags](#input\_role\_default\_tags) | A map of tags to assign to all Roles. | `map` | `{}` | no |
+| <a name="policy_default_tags"></a> [policy_default_tags](#input\_policy\_default\_tags) | A map of tags to assign to all Policies. | `map` | `{}` | no |
+| <a name="users_default_tags"></a> [users_default_tags](#input\_users\_default\_tags) | A map of tags to assign to all Users. | `map` | `{}` | no |
 
 ## Nested Configuration Maps:  
 
 #### organization_units
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="name"></a> [name](#input\_name) | The name for the organizational unit | `string` |  | yes |  |
-| <a name="parent"></a> [parent](#input\_parent) | The name the parent organizational unit; If not given; Root will be the parent | `string` |  | no |  |
-| <a name="tags"></a> [tags](#input\_tags) | A map of tags to assign to the OU resource. | `map` | `{}` | no |  |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="name"></a> [name](#input\_name) | The name for the organizational unit | `string` |  | yes |
+| <a name="parent"></a> [parent](#input\_parent) | The name the parent organizational unit; If not given; Root will be the parent | `string` |  | no |
+| <a name="tags"></a> [tags](#input\_tags) | A map of tags to assign to the OU resource. | `map` | `{}` | no |
 
 #### organizations_policies
 
 - Policy content to be add to the policy will be read from the JSON document `policy_file` from the directory `org_policies` under root directory
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="name"></a> [name](#input\_name) | The friendly name to assign to the policy. | `string` |  | yes |  |
-| <a name="policy_file"></a> [policy_file](#input\_policy\_file) | The policy file name. | `string` | `yes` | yes |  |
-| <a name="description"></a> [description](#input\_account\_alias) | A description to assign to the policy. | `string` | `"SERVICE_CONTROL_POLICY"` | no |  |
-| <a name="type"></a> [type](#input\_type) | The account alias | `string` |  | no |  |
-| <a name="tags"></a> [tags](#input\_tags) | A map of tags to assign to the Organization Policy | `map` | `{}` | no |  |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="name"></a> [name](#input\_name) | The friendly name to assign to the policy. | `string` |  | yes |
+| <a name="policy_file"></a> [policy_file](#input\_policy\_file) | The policy file name. | `string` | `yes` | yes |
+| <a name="description"></a> [description](#input\_account\_alias) | A description to assign to the policy. | `string` | `"SERVICE_CONTROL_POLICY"` | no |
+| <a name="type"></a> [type](#input\_type) | The account alias | `string` |  | no |
+| <a name="tags"></a> [tags](#input\_tags) | A map of tags to assign to the Organization Policy | `map` | `{}` | no |
 
 #### organizations_accounts
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="name"></a> [name](#input\_name) | Friendly name for the member account. | `string` |  | yes |  |
-| <a name="email"></a> [email](#input\_email) | Email address of the owner to assign to the new member account. | `string` |  | yes |  |
-| <a name="role_name"></a> [role_name](#input\_role\_name) | The name of an IAM role that Organizations automatically preconfigures in the new member account. | `string` |  | yes |  |
-| <a name="tags"></a> [tags](#input\_tags) | A map of tags to assign to the member account | `map` | `{}` | no |  |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="name"></a> [name](#input\_name) | Friendly name for the member account. | `string` |  | yes |
+| <a name="email"></a> [email](#input\_email) | Email address of the owner to assign to the new member account. | `string` |  | yes |
+| <a name="role_name"></a> [role_name](#input\_role\_name) | The name of an IAM role that Organizations automatically preconfigures in the new member account. | `string` |  | yes |
+| <a name="tags"></a> [tags](#input\_tags) | A map of tags to assign to the member account | `map` | `{}` | no |
 
 #### password_policy
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="allow_users_to_change_password"></a> [allow_users_to_change_password](#input\_allow\_users\_to\_change\_password) | Whether to allow users to change their own password | `string` | `yes` | no |  |
-| <a name="hard_expiry"></a> [hard_expiry](#input\_hard\_expiry) | Whether users are prevented from setting a new password after their password has expired | `string` | `no` | no |  |
-| <a name="max_password_age"></a> [max_password_age](#input\_max\_password\_age) | The number of days that an user password is valid. | `number` | `0` | no |  |
-| <a name="minimum_password_length"></a> [minimum_password_length](#input\_minimum\_password\_length) | Minimum length to require for user passwords. | `number` | `8` | no |  |
-| <a name="password_reuse_prevention"></a> [password_reuse_prevention](#input\_password\_reuse\_prevention) | The number of previous passwords that users are prevented from reusing. | `string` |  | no |  |
-| <a name="require_lowercase_characters"></a> [require_lowercase_characters](#input\_require\_lowercase\_characters) | Whether to require lowercase characters for user passwords. | `string` | `yes` | no |  |
-| <a name="require_numbers"></a> [require_numbers](#input\_require\_numbers) | Whether to require numbers for user passwords. | `string` | `yes` | no |  |
-| <a name="require_symbols"></a> [require_symbols](#input\_require\_symbols) | Whether to require symbols for user passwords. | `string` | `yes` | no |  |
-| <a name="require_uppercase_characters"></a> [require_uppercase_characters](#input\_require\_uppercase\_characters) | Whether to require uppercase characters for user passwords | `string` | `yes` | no |  |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="allow_users_to_change_password"></a> [allow_users_to_change_password](#input\_allow\_users\_to\_change\_password) | Whether to allow users to change their own password | `string` | `yes` | no |
+| <a name="hard_expiry"></a> [hard_expiry](#input\_hard\_expiry) | Whether users are prevented from setting a new password after their password has expired | `string` | `no` | no |
+| <a name="max_password_age"></a> [max_password_age](#input\_max\_password\_age) | The number of days that an user password is valid. | `number` | `0` | no |
+| <a name="minimum_password_length"></a> [minimum_password_length](#input\_minimum\_password\_length) | Minimum length to require for user passwords. | `number` | `8` | no |
+| <a name="password_reuse_prevention"></a> [password_reuse_prevention](#input\_password\_reuse\_prevention) | The number of previous passwords that users are prevented from reusing. | `string` |  | no |
+| <a name="require_lowercase_characters"></a> [require_lowercase_characters](#input\_require\_lowercase\_characters) | Whether to require lowercase characters for user passwords. | `string` | `yes` | no |
+| <a name="require_numbers"></a> [require_numbers](#input\_require\_numbers) | Whether to require numbers for user passwords. | `string` | `yes` | no |
+| <a name="require_symbols"></a> [require_symbols](#input\_require\_symbols) | Whether to require symbols for user passwords. | `string` | `yes` | no |
+| <a name="require_uppercase_characters"></a> [require_uppercase_characters](#input\_require\_uppercase\_characters) | Whether to require uppercase characters for user passwords | `string` | `yes` | no |
 
 #### policy
 
 - Policy content to be add to the policy will be read from the JSON document `policy_file` from the directory `policies` under root directory
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="name"></a> [name](#input\_name) | The name of the policy. | `string` | `yes` | yes |  |
-| <a name="policy_file"></a> [policy_file](#input\_policy\_file) | The policy file name. | `string` | `yes` | yes |  |
-| <a name="description"></a> [description](#input\_description) | Description of the IAM policy. | `string` | `<name of the policy>` | no |  |
-| <a name="path"></a> [path](#input\_path) | Path in which to create the policy. | `string` | `"/"` | no |  |
-| <a name="tags"></a> [tags](#input\_tags) | A map of tags to assign to the policy. | `{}` | `no` | no |  |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="name"></a> [name](#input\_name) | The name of the policy. | `string` | `yes` | yes |
+| <a name="policy_file"></a> [policy_file](#input\_policy\_file) | The policy file name. | `string` | `yes` | yes |
+| <a name="description"></a> [description](#input\_description) | Description of the IAM policy. | `string` | `<name of the policy>` | no |
+| <a name="path"></a> [path](#input\_path) | Path in which to create the policy. | `string` | `"/"` | no |
+| <a name="tags"></a> [tags](#input\_tags) | A map of tags to assign to the policy. | `{}` | `no` | no |
 
 #### role
 
 - Property `account_ids` is used only for `trusted_account_roles`
 - Property `service_names` is used only for `service_linked_roles`
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="name"></a> [name](#input\_name) | Friendly name of the IAM role.  | `string` |  | yes |  |
-| <a name="description"></a> [description](#input\_description) | Description of the IAM role. | `string` | `<name of the role>` | no |  |
-| <a name="path"></a> [path](#input\_path) | Path in which to create the policy. | `string` | `"/"` | no |  |
-| <a name="max_session_duration"></a> [max_session_duration](#input\_max\_session\_duration) | Path in which to create the role. | `number` | `3600` | no |  |
-| <a name="force_detach_policies"></a> [force_detach_policies](#input\_force\_detach\_policies) | Whether to force detaching any policies the role has before destroying it. | `bool` | `false` | no |  |
-| <a name="account_ids"></a> [account_ids](#input\_account\_ids) | List of Account IDs to be trusted | `list(string)` |  | yes | Required in case of `trusted_account_roles` |
-| <a name="service_names"></a> [service_names](#input\_service\_names) | List of Service domain to be trusted | `list(string)` |  | yes | Required in case of `service_linked_roles` |
-| <a name="policy_list"></a> [policy_list](#input\_policies) | List of Policies to be attached where each entry will be map with following entries,<br><b>&nbsp;&nbsp;&nbsp;name:</b> Policy Name<br><b>&nbsp;&nbsp;&nbsp;arn:</b> Policy ARN (if existing policy) | `list` | `[]` | no |  |
-| <a name="tags"></a> [tags](#input\_tags) | A map of tags to assign to the policy. | `{}` | `no` | no |  |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="name"></a> [name](#input\_name) | Friendly name of the IAM role.  | `string` |  | yes |
+| <a name="description"></a> [description](#input\_description) | Description of the IAM role. | `string` | `<name of the role>` | no |
+| <a name="path"></a> [path](#input\_path) | Path in which to create the policy. | `string` | `"/"` | no |
+| <a name="max_session_duration"></a> [max_session_duration](#input\_max\_session\_duration) | Path in which to create the role. | `number` | `3600` | no |
+| <a name="force_detach_policies"></a> [force_detach_policies](#input\_force\_detach\_policies) | Whether to force detaching any policies the role has before destroying it. | `bool` | `false` | no |
+| <a name="account_ids"></a> [account_ids](#input\_account\_ids) | List of Account IDs to be trusted. Required in case of `trusted_account_roles` | `list(string)` |  | yes |
+| <a name="service_names"></a> [service_names](#input\_service\_names) | List of Service domain to be trusted. Required in case of `service_linked_roles` | `list(string)` |  | yes |
+| <a name="policy_list"></a> [policy_list](#input\_policies) | List of Policies to be attached where each entry will be map with following entries,<br><b>&nbsp;&nbsp;&nbsp;name:</b> Policy Name<br><b>&nbsp;&nbsp;&nbsp;arn:</b> Policy ARN (if existing policy) | `list` | `[]` | no |
+| <a name="tags"></a> [tags](#input\_tags) | A map of tags to assign to the policy. | `{}` | `no` | no |
 
 #### group
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="name"></a> [name](#input\_name) | The name of the group. | `string` | `yes` | yes |  |
-| <a name="path"></a> [path](#input\_path) | Path in which to create the group. | `string` | `"/"` | no |  |
-| <a name="policy_list"></a> [policy_list](#input\_policies) | List of Policies to be attached where each entry will be map with following entries,<br><b>&nbsp;&nbsp;&nbsp;name:</b> Policy Name<br><b>&nbsp;&nbsp;&nbsp;arn:</b> Policy ARN (if existing policy) | `list` | `[]` | no |  |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="name"></a> [name](#input\_name) | The name of the group. | `string` | `yes` | yes |
+| <a name="path"></a> [path](#input\_path) | Path in which to create the group. | `string` | `"/"` | no |
+| <a name="policy_list"></a> [policy_list](#input\_policies) | List of Policies to be attached where each entry will be map with following entries,<br><b>&nbsp;&nbsp;&nbsp;name:</b> Policy Name<br><b>&nbsp;&nbsp;&nbsp;arn:</b> Policy ARN (if existing policy) | `list` | `[]` | no |
 
 #### user
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="name"></a> [name](#input\_name) | The user's name. | `string` |  | yes |  |
-| <a name="path"></a> [path](#input\_path) | Path in which to create the group. | `string` | `"/"` | no |  |
-| <a name="force_destroy"></a> [force_destroy](#input\_force\_destroy) | hen destroying this user, destroy even if it has non-Terraform-managed IAM access keys, login profile or MFA devices. | `string` | `"yes"` | no |  |
-| <a name="permissions_boundary"></a> [permissions_boundary](#input\_permissions\_boundary) | The ARN of the policy that is used to set the permissions boundary for the user. | `string` |  | no |  |
-| <a name="create_login_profile"></a> [create_login_profile](#input\_create\_login\_profile) | Manages an IAM User Login Profile | `string` | `"no"` | no |  |
-| <a name="pgp_key_file"></a> [pgp_key_file](#input\_pgp\_key\_file) | A base-64 encoded PGP public key file name: Has to be stored in folder "/keys/pgp/" at the root  | `string` |  | no |  |
-| <a name="password_length"></a> [password_length](#input\_password\_length) | The length of the generated password on resource creation. | `number` | `32` | no |  |
-| <a name="password_reset_required"></a> [password_reset_required](#input\_password\_reset\_required) | Whether the user should be forced to reset the generated password on resource creation. | `string` | `"yes"` | no |  |
-| <a name="create_access_key"></a> [create_access_key](#input\_create\_access\_key) | Provides an IAM access key. | `string` | `"no"` | no |  |
-| <a name="access_key_status"></a> [access_key_status](#input\_access\_key\_status) | Access key status to apply | `string` | `"Active"` | no |  |
-| <a name="upload_ssh_key"></a> [upload_ssh_key](#input\_upload\_ssh\_key) | Whether to upload SSH public key | `string` | `"no"` | no |  |
-| <a name="encoding"></a> [encoding](#input\_encoding) | Specifies the public key encoding format to use in the response. | `string` | `"SSH"` | no |  |
-| <a name="ssh_public_key_file"></a> [ssh_public_key_file](#input\_ssh\_public\_key\_file) | SSH Public Key file name (Encoded SSH public key in ssh-rsa format): Has to be stored in folder "/keys/ssh/" at the root. | `string` |  | no |  |
-| <a name="ssh_key_status"></a> [ssh_key_status](#input\_ssh\_key\_status) | The status to assign to the SSH public key. | `string` | `"Active"` | no |  |
-| <a name="force_mfa"></a> [force_mfa](#input\_force\_mfa) | Whether to enforce IAM user for MFA | `string` | `"yes"` | no |  |
-| <a name="groups"></a> [groups](#input\_groups) | Comma separated value of the IAM groups | `string` |  | no |  |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="name"></a> [name](#input\_name) | The user's name. | `string` |  | yes |
+| <a name="path"></a> [path](#input\_path) | Path in which to create the group. | `string` | `"/"` | no |
+| <a name="force_destroy"></a> [force_destroy](#input\_force\_destroy) | hen destroying this user, destroy even if it has non-Terraform-managed IAM access keys, login profile or MFA devices. | `string` | `"yes"` | no |
+| <a name="permissions_boundary"></a> [permissions_boundary](#input\_permissions\_boundary) | The ARN of the policy that is used to set the permissions boundary for the user. | `string` |  | no |
+| <a name="create_login_profile"></a> [create_login_profile](#input\_create\_login\_profile) | Manages an IAM User Login Profile | `string` | `"no"` | no |
+| <a name="pgp_key_file"></a> [pgp_key_file](#input\_pgp\_key\_file) | A base-64 encoded PGP public key file name: Has to be stored in folder "/keys/pgp/" at the root  | `string` |  | no |
+| <a name="password_length"></a> [password_length](#input\_password\_length) | The length of the generated password on resource creation. | `number` | `32` | no |
+| <a name="password_reset_required"></a> [password_reset_required](#input\_password\_reset\_required) | Whether the user should be forced to reset the generated password on resource creation. | `string` | `"yes"` | no |
+| <a name="create_access_key"></a> [create_access_key](#input\_create\_access\_key) | Provides an IAM access key. | `string` | `"no"` | no |
+| <a name="access_key_status"></a> [access_key_status](#input\_access\_key\_status) | Access key status to apply | `string` | `"Active"` | no |
+| <a name="upload_ssh_key"></a> [upload_ssh_key](#input\_upload\_ssh\_key) | Whether to upload SSH public key | `string` | `"no"` | no |
+| <a name="encoding"></a> [encoding](#input\_encoding) | Specifies the public key encoding format to use in the response. | `string` | `"SSH"` | no |
+| <a name="ssh_public_key_file"></a> [ssh_public_key_file](#input\_ssh\_public\_key\_file) | SSH Public Key file name (Encoded SSH public key in ssh-rsa format): Has to be stored in folder "/keys/ssh/" at the root. | `string` |  | no |
+| <a name="ssh_key_status"></a> [ssh_key_status](#input\_ssh\_key\_status) | The status to assign to the SSH public key. | `string` | `"Active"` | no |
+| <a name="force_mfa"></a> [force_mfa](#input\_force\_mfa) | Whether to enforce IAM user for MFA | `string` | `"yes"` | no |
+| <a name="groups"></a> [groups](#input\_groups) | Comma separated value of the IAM groups | `string` |  | no |
 
 ## Outputs
 
