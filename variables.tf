@@ -202,7 +202,7 @@ permissions_boundary - (Optional) The ARN of the policy that is used to set the 
                        boundary for the user.
 
 create_login_profile - (Optional, default "no") Manages an IAM User Login Profile
-pgp_key_file - (Optional, default "") A base-64 encoded PGP public key file name: Has to be stored in folder "/keys/pgp/" at the root 
+pgp_key_file - (Optional, default "") A base-64 encoded PGP public key file name with path relative to root directory.
 password_length - (Optional, default 32) The length of the generated password on resource creation.
 password_reset_required - (Optional, default "yes") Whether the user should be forced 
                           to reset the generated password on resource creation.
@@ -212,7 +212,7 @@ access_key_status - (Optional, default "Active") Access key status to apply.
 
 upload_ssh_key - (Optional, default "no") Whether to upload SSH public key
 encoding - (Optional, default "SSH") Specifies the public key encoding format to use in the response.
-ssh_public_key_file - (Optional, default "no") (Required) SSH Public Key file name (Encoded SSH public key in ssh-rsa format): Has to be stored in folder "/keys/ssh/" at the root 
+ssh_public_key_file - (Optional, default "no") (Required) SSH Public Key file name with path relative to root directory. (Encoded SSH public key in ssh-rsa format)
 ssh_key_status - (Optional, default "Active") (Optional) The status to assign to the SSH public key.
 
 force_mfa - (Optional, default "yes") Whether to enforce IAM user for MFA

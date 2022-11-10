@@ -33,7 +33,7 @@ resource aws_iam_access_key "this" {
                       if (lookup(user, "create_access_key", "no") == "yes") && (lookup(user, "pgp_key_file", "") != "")}
 
     user    = aws_iam_user.this[each.key].name
-    pgp_key  = file("${path.root}/keys/pgp/${each.value.pgp_key_file}")
+    pgp_key  = file("${path.root}/${each.value.pgp_key_file}")
     status  = lookup(each.value, "access_key_status", "Active")
 }
 
@@ -56,7 +56,7 @@ resource aws_iam_user_ssh_key "this" {
 
     username    = aws_iam_user.this[each.key].name
     encoding    = lookup(each.value, "encoding", "SSH")
-    public_key  = file("${path.root}/keys/ssh/${each.value.ssh_public_key_file}")
+    public_key  = file("${path.root}/${each.value.ssh_public_key_file}")
     status      = lookup(each.value, "ssh_key_status", "Active")
 }
 
