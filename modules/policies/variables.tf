@@ -5,8 +5,7 @@ variable "policies" {
 name        : The name of the policy.
               (Required)
 
-policy_file : Policy File name; Policy content to be add to the policy will be read from the
-              JSON document `<policy_file>` from the directory "policies" under root directory.
+policy_file : Policy File name with path relative to root directory.
               (Required)
 
 description : Description of the IAM policy. Default: Policy Name

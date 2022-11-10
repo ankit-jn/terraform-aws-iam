@@ -125,12 +125,12 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 
 #### organizations_policies
 
-- Policy content to be add to the policy will be read from the JSON document `policy_file` from the directory `org_policies` under root directory
+- Policy content to be add to the policy will be read from the JSON document from the file placed at the path `<path.root>/<policy_file>`
 
 | Name | Description | Type | Default | Required |
 |:------|:------|:------|:------|:------:|
 | <a name="name"></a> [name](#input\_name) | The friendly name to assign to the policy. | `string` |  | yes |
-| <a name="policy_file"></a> [policy_file](#input\_policy\_file) | The policy file name. | `string` | `yes` | yes |
+| <a name="policy_file"></a> [policy_file](#input\_policy\_file) | Policy File name with path relative to root directory i.e. `policies/custom_policy.json`. | `string` | | yes |
 | <a name="description"></a> [description](#input\_account\_alias) | A description to assign to the policy. | `string` | `"SERVICE_CONTROL_POLICY"` | no |
 | <a name="type"></a> [type](#input\_type) | The account alias | `string` |  | no |
 | <a name="tags"></a> [tags](#input\_tags) | A map of tags to assign to the Organization Policy | `map` | `{}` | no |
@@ -160,12 +160,12 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 
 #### policy
 
-- Policy content to be add to the policy will be read from the JSON document `policy_file` from the directory `policies` under root directory
+- Policy content to be add to the policy will be read from the JSON document from the file placed at the path `<path.root>/<policy_file>`
 
 | Name | Description | Type | Default | Required |
 |:------|:------|:------|:------|:------:|
 | <a name="name"></a> [name](#input\_name) | The name of the policy. | `string` | `yes` | yes |
-| <a name="policy_file"></a> [policy_file](#input\_policy\_file) | The policy file name. | `string` | `yes` | yes |
+| <a name="policy_file"></a> [policy_file](#input\_policy\_file) | Policy File name with path relative to root directory i.e. `policies/custom_policy.json`. | `string` | | yes |
 | <a name="description"></a> [description](#input\_description) | Description of the IAM policy. | `string` | `<name of the policy>` | no |
 | <a name="path"></a> [path](#input\_path) | Path in which to create the policy. | `string` | `"/"` | no |
 | <a name="tags"></a> [tags](#input\_tags) | A map of tags to assign to the policy. | `{}` | `no` | no |

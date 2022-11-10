@@ -48,8 +48,7 @@ variable "organizations_policies" {
 
 name        : The friendly name to assign to the policy.
               (Required)
-policy_file : Policy File name; Policy content to be add to the policy will be read from the
-              JSON document `<policy_file>` from the directory "org_policies" under root directory.
+policy_file : Policy File name with path relative to root directory.
               (Required)
 description : A description to assign to the policy.
               (Optional)
