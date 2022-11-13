@@ -1,9 +1,9 @@
-# ARJ-Stack: AWS IAM Terraform module
+## ARJ-Stack: AWS IAM Terraform module
 
 A Terraform module for configuring IAM (Organization, Groups, Users, Polices, Roles etc.) in AWS.
 
 ---
-## Features
+### Features
 - Organization
     - Create Account as AWS Organization
     - Create Organization Units (Support up to 5 Level through this module)
@@ -26,7 +26,7 @@ Note:
 
 Refer example section for different scenarios
 
-## Resources
+### Resources
 This module features the following components to be provisioned with different combinations:
 
 - AWS Organization [[aws_organizations_organization](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/organizations_organization)]
@@ -49,24 +49,24 @@ This module features the following components to be provisioned with different c
 - Attachment of IAM Policy with IAM role [[aws_iam_role_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment)]
 
 
-## Requirements
+### Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.2.5 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.22.0 |
 
-## Providers
+### Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.22.0 |
 
-## Examples
+### Examples
 
 Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-examples/tree/main/aws-iam) for effectively utilizing this module.
 
-## Inputs
+### Inputs
 
 #### Organization Specific Properties
 ---
@@ -113,7 +113,7 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="policy_default_tags"></a> [policy_default_tags](#input\_policy\_default\_tags) | A map of tags to assign to all Policies. | `map` | `{}` | no |
 | <a name="users_default_tags"></a> [users_default_tags](#input\_users\_default\_tags) | A map of tags to assign to all Users. | `map` | `{}` | no |
 
-## Nested Configuration Maps:  
+### Nested Configuration Maps:  
 
 #### organization_units
 
@@ -216,7 +216,7 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="force_mfa"></a> [force_mfa](#input\_force\_mfa) | Whether to enforce IAM user for MFA | `string` | `"yes"` | no |
 | <a name="groups"></a> [groups](#input\_groups) | Comma separated value of the IAM groups | `string` |  | no |
 
-## Outputs
+### Outputs
 
 | Name | Type | Description |
 |:------|:------|:------|
@@ -232,6 +232,6 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="users"></a> [users](#output\_users) | `map` | Map of all the IAM users where each Key Pair will have the following combinations:<br><b>Map Key:</b> The group's name<br><b>Map Value:</b> Map of the following User attributes:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`arn:` The ARN assigned by AWS for this user.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`unique_id:` The unique ID assigned by AWS.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`access_key_id:` Access Key ID.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`password_decrypt_command:` Command to decrypt the encrpted password (Only if PGP key is used)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`secret_key_decrypt_command:` Command to decrypt the encrpted secret (Only if PGP key is used)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`groups:` List of groups which user has a membership to. |
 
 
-## Authors
+### Authors
 
 Module is maintained by [Ankit Jain](https://github.com/ankit-jn) with help from [these professional](https://github.com/arjstack/terraform-aws-iam/graphs/contributors).
