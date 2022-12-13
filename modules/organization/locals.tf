@@ -1,8 +1,4 @@
 locals {
-    policy_contents = { for policy in var.organizations_policies : 
-                            policy.name => merge(policy, { "policyjson" : data.template_file.policy_template[policy.name].rendered })}
-
-
     ## Segregate the List of Organization Unit into set of variables based on Levels
     ou_level_1 = { for ou in var.organization_units : ou.name => ou if lookup(ou, "parent", 0) == 0 }
     ou_level_2 = { for ou in var.organization_units : ou.name => ou 

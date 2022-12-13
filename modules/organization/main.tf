@@ -94,19 +94,18 @@ resource aws_organizations_organizational_unit "level_5" {
 ################################
 
 data template_file "policy_template" {
-    for_each = { for policy in var.organizations_policies: policy.name => policy } 
+    for_each = { for policy in var.organizations_policies: policy.name => policy if try(policy.policy_file, "") != "" } 
     
     template = file("${path.root}/${each.value.policy_file}")
 }
 
 resource aws_organizations_policy "policy" {
-    for_each = local.policy_contents
+    for_each = { for policy in var.organizations_policies: policy.name => policy }
 
     name        = each.value.name
     description = each.value.description
     type        = each.value.type
-    content     = each.value.policyjson
-
+    content     = (try(each.value.policy_content, "") != "") ? each.value.policy_content : data.template_file.policy_template[each.key].rendered
     tags = merge(
             {"Name" = format("%s", each.value.name)}, 
             var.organization_default_tags, 
@@ -116,7 +115,7 @@ resource aws_organizations_policy "policy" {
 
 # Attach the Organization Policy to the Root
 resource aws_organizations_policy_attachment "policy_attachment" {
-  for_each = local.policy_contents
+  for_each = var.organizations_policies
 
   policy_id = aws_organizations_policy.policy[each.key].id
   target_id = aws_organizations_organization.this.roots[0].id

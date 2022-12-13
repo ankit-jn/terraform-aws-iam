@@ -1,12 +1,16 @@
 variable "policies" {
     description = <<EOF
 (Optional) List of Map for IAM Policies with the follwoing Key Pairs:
+One of the variable is required: `policy_file` or `policy_content`
 
 name        : The name of the policy.
               (Required)
 
 policy_file : Policy File name with path relative to root directory.
-              (Required)
+              (Optional)
+
+policy_content : Policy Content (JSON).
+              (Optional)
 
 description : Description of the IAM policy. Default: Policy Name
               (Optional) 

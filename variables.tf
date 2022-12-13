@@ -55,9 +55,11 @@ EOF
 variable "organizations_policies" {
     description = <<EOF
 (Optional) List of Map for organizations Policies with the follwoing Key Pairs:
+One of the variable is required: `policy_file` or `policy_content`
 
 name - (Required) The friendly name to assign to the policy.
-policy_file - (Required) Policy File name with path relative to root directory.
+policy_file - (Optional) Policy File name with path relative to root directory.
+policy_content - (Optional) Policy Content (JSON).
 description - (Optional) A description to assign to the policy.
 type -  (Optional) The type of policy to create. 
         Valid values are AISERVICES_OPT_OUT_POLICY, BACKUP_POLICY, SERVICE_CONTROL_POLICY (SCP), and TAG_POLICY.
@@ -121,9 +123,11 @@ variable "create_force_mfa_policy" {
 variable "policies" {
     description = <<EOF
 (Optional) List of Map for IAM Policies with the follwoing Key Pairs:
+One of the variable is required: `policy_file` or `policy_content`
 
 name - (Required) The name of the policy. 
-policy_file: (Required) Policy File name with path relative to root directory.
+policy_file: (Optional) Policy File name with path relative to root directory.
+policy_content: (Optional) Policy Content (JSON).
 description - (Optional) Description of the IAM policy. Default: Policy Name
 path - (Optional, default "/") Path in which to create the policy.
 tags - (Optional) A map of tags to assign to the policy.

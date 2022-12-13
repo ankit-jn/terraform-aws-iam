@@ -45,11 +45,14 @@ EOF
 variable "organizations_policies" {
     description = <<EOF
 (Optional) List of Map for organizations Policies with the follwoing Key Pairs:
+One of the variable is required: `policy_file` or `policy_content`
 
 name        : The friendly name to assign to the policy.
               (Required)
 policy_file : Policy File name with path relative to root directory.
-              (Required)
+              (Optional)
+policy_content: Policy Content (JSON).
+                (Optional)              
 description : A description to assign to the policy.
               (Optional)
 type        : The type of policy to create. Valid values are AISERVICES_OPT_OUT_POLICY, 
